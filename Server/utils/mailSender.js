@@ -10,7 +10,6 @@ const mailSender  = async (email, title, body)=>{
             auth:{
                 user: process.env.MAIL_USER,
                 pass: process.env.MAIL_PASS
-
             }
         })
 
@@ -22,7 +21,6 @@ const mailSender  = async (email, title, body)=>{
         })
 
         console.log(info);
-
         return info;
 
     }
