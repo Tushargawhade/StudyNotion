@@ -1,4 +1,4 @@
-const { default: mongoose } = require('mongoose');
+// const { default: mongoose } = require('mongoose');
 const monogoose = require('mongoose');
 const mailSender = require('../utils/mailSender');
 
@@ -24,7 +24,6 @@ const otpSchema = new monogoose.Schema({
 
 
 // async function to send mail
-
 async function sendVerificationEmail(email,otp){
     try{
         const mailResponse = await mailSender(email, "Verification mail from studynotion",otp);

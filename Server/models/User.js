@@ -51,6 +51,13 @@ const userSchema = new mongoose.Schema({
         type: monogoose.Schema.Types.ObjectId,
         required:true,
         ref: "CourseProgress"
+    },
+
+    contactNumber:{
+        type: Number
+    },
+    otp:{
+        type : Number
     }
 
 })
