@@ -89,7 +89,7 @@ exports.signup = async (req,res)=>{
         lastName,
         email,
         password,
-        conformPassword,
+        confirmPassword,
         accontType,
         contactNumber,
         otp,
@@ -97,7 +97,7 @@ exports.signup = async (req,res)=>{
 
 
       // validate 
-      if(!firstName || !lastName || !email || !password || !conformPassword || !otp ){
+      if(!firstName || !lastName || !email || !password || !confirmPassword || !otp ){
         return res.status(403).json({
           success: false,
           messsage : "All fields are required"
@@ -105,7 +105,7 @@ exports.signup = async (req,res)=>{
       }
 
       // match both passwords 
-      if(password !== conformPassword){
+      if(password !== confirmPassword){
         return res.status(400).json({
           success: false,
           messsage : "Password and conform password not match "
