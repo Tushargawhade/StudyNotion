@@ -147,12 +147,8 @@ exports.signup = async (req,res)=>{
       }
 
 
-
-
       // hash password
       const hashedPassword = await bcrpt.hash(password,10) 
-
-
 
       // enrty create in db 
 
@@ -162,8 +158,6 @@ exports.signup = async (req,res)=>{
         about : null,
         contactNumber : null
       })
-
-
 
       const user = await User.create({
         firstName,
@@ -185,8 +179,6 @@ exports.signup = async (req,res)=>{
         user
       })
 
-
-
     }
     catch(error){
       console.log("Something went wrong in signUp")
@@ -195,21 +187,7 @@ exports.signup = async (req,res)=>{
         success: false,
         message : "User can not Registerd Successfully Try again!! "
       })
-
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
 }
 
 
@@ -244,7 +222,6 @@ exports.login = async (req,res) =>{
 
       //if yes verify password  and generate jwt token 
       if(await bcrpt.compare(password , user.password)){
-
         
         const payload = {
           email : user.email,
