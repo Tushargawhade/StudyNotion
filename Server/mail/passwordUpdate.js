@@ -32,7 +32,7 @@ exports.passwordUpdate = (email, name) => {
             }
             
             .message{
-                font-size: 10px;
+                font-size: 16px;
                 font-weight: bold;
                 margin-bottom: 20px;
             }
@@ -63,7 +63,7 @@ exports.passwordUpdate = (email, name) => {
             <div class="body">
                 <p>Hey ${name},</p>
                 <p>Your password has been successfully updated for the email <span class="highlight">${email}</span></p>
-                <p>If you did request this password change, please contact us immediately to secure your account </p>
+                <p>If you did NOT request this password change, please contact us immediately to secure your account </p>
             </div>
 
             <div class="support">

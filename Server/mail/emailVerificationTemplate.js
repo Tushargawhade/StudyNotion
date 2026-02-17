@@ -1,13 +1,11 @@
-exports.courseEnrollmentEmail = (name, courseName) => {
-
+exports.otpTemplate = (otp) => {
     return `
-    
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Registration Confirmation</title>
+    <title>OTP Verification Email   </title>
     <style>
         body{
             background-color: #ffffff;
@@ -65,31 +63,38 @@ exports.courseEnrollmentEmail = (name, courseName) => {
         }
 
     </style>
-
 </head>
 <body>
 
-        <div class="container">
-            <a href="https://studynotion-edtech-project.vercel.app"><img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion Logo"></a>
+    <div class="container">
+        <a href="https://studynotion-edtech-project.vercel.app">
+            <img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion Logo">
+        </a>
 
-            <div class="message">Course Registration Confirmation</div>
+        <div class="message">OTP Verification Mail</div>
 
-            <div class="body">
-                <p>Dear ${name},</p>
-                <p> you have successfully registered for the course <span class="highlight">${courseName}</span> We are excited to have you as a participant!
-                </p>
+        <div class="body">
+            <p>Dear User,</p>
 
-                <p>please log in to your learning dashboard to access the course material and start your learning </p>
+            <p>
+                Thank you for registering with studynotion. to complete your registration, please use the following (OTP) to verify your account: 
+            </p>
+            <h2 class="highlight">${otp}</h2>
 
-                <a class="cta" href="https://studynotion-edtech-project.vercel.app/dashboard">Go to Dashboard</a>
-            </div>
+            <p>
+            This OTP is valid for 5 minutes. If you did not request this verification, please disregard this message. Once your account is verified, you will have access to our platform and its features.
+            </p>
 
-            <div class="support">
-                If you have any questions, please contact our support team at <a href="mailto:info@studynotion.com">info@studynotion.com</a> 
-            </div>
+            
         </div>
+
+        <div class="support">
+            If you have any questions, please contact our support team at 
+            <a href="mailto:info@studynotion.com">info@studynotion.com</a>
+        </div>
+    </div>
+
 </body>
 </html>
-`
-
-}  
+`;
+};
