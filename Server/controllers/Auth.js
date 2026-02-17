@@ -3,7 +3,9 @@ const OTP = require("../models/OTP");
 const otpGenerator = require('otp-generator');
 const bcrpt = require('bcrypt');
 const jwt =  require("jsonwebtoken");
-
+const mailSender = require("../utils/mailSender");
+const Profile = require("../models/Profile");
+const {passwordUpdate} = require("../mail/passwordUpdate");
 require('dotenv').config();
 
 
@@ -79,8 +81,6 @@ exports.otp = async (req, res) => {
 // signup function
 
 exports.signup = async (req,res)=>{
-
-
     try{
 
       // data fetch 
@@ -113,10 +113,8 @@ exports.signup = async (req,res)=>{
 
       }
 
-
       // check user already exist or not 
       const existingUser  =  await  User.findOne({email})
-
       if(existingUser){
         return res.status(400).json({
           success: false,
@@ -148,10 +146,15 @@ exports.signup = async (req,res)=>{
 
 
       // hash password
-      const hashedPassword = await bcrpt.hash(password,10) 
+      const hashedPassword = await bcrpt.hash(password,10)
+      
+      // change 
+      // create the user 
+      let approved = "";
+      approved === "Instructor" ? (approved = false) : (approved = true);
+
 
       // enrty create in db 
-
       const profilDetails = await Profile.create({
         gender: null,
         dateOfBirth : null,
@@ -164,16 +167,16 @@ exports.signup = async (req,res)=>{
         lastName,
         email,
         password: hashedPassword,
-        accountType,
-        additionalDetails: profilDetails,
+        accountType: accontType,
+        additionalDetails: profilDetails._id,
         contactNumber,
+        approved : approved,
         image : `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`
       })
 
 
       // return res
-      
-      res.json({
+      return res.status(200).json({
         success:true,
         message: "User Registerd Successfully .... ",
         user

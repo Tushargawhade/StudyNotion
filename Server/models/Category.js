@@ -1,4 +1,3 @@
-const { default: mongoose } = require('mongoose');
 const monogoose = require('mongoose');
 
 const categorySchema = new monogoose.Schema({
@@ -14,7 +13,7 @@ const categorySchema = new monogoose.Schema({
     },
 
     course:{
-        type:mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref:"Course"
     },
 
