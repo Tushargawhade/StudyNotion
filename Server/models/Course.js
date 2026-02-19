@@ -4,12 +4,12 @@ const monogoose = require('mongoose');
 
 const courseSchema = new monogoose.Schema({
 
-    name:{
+    courseName:{
         type:String,
         required: true
     },
 
-    description:{
+    courseDescription:{
         type:String,
         required: true
     },
@@ -17,7 +17,7 @@ const courseSchema = new monogoose.Schema({
     instructor:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"
-    },
+    }, 
 
     whatWillLearn:{
         type:String,
@@ -44,22 +44,31 @@ const courseSchema = new monogoose.Schema({
         type:String
     },
 
-    Category:{
+    category:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Category"
     },
 
     
     tags:{
-        type: String,
+        type: [String],
+        required: true,
     },
 
     studentEnrolled:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
 
-    }
+    },
 
+    instructions: {
+        type : [String]
+    },
+
+    status :{ 
+        type :String,
+        enum : ["Draft", "Published"],
+    },
 })
 
 module.exports = mongoose.model("Course",courseSchema)
