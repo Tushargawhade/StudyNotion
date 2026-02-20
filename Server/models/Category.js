@@ -12,13 +12,12 @@ const categorySchema = new monogoose.Schema({
         trim:true
     },
 
-    course:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"Course"
-    },
-
-    
-
+    courses:[
+        {   
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"Course"
+        }
+    ],
 })
 
 module.exports = mongoose.model("Category",categorySchema)

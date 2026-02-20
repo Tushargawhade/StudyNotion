@@ -18,8 +18,13 @@ const ratingAndreviewSchema = new monogoose.Schema({
          type:String,
          trim:true
     },
-
-
+    course:{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "Course",
+        required : true,
+        index : true,
+    }
+    
 })
 
 module.exports = mongoose.model("RatingAndReview",ratingAndreviewSchema)
