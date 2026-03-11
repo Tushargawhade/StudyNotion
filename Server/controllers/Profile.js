@@ -12,7 +12,7 @@ exports.updateProfile = async (req,res)=>{
         const {dateOfBirth="" , gender ,about="", phoneNo} = req.body;
 
         // get userId 
-        const userId  = req.body.id;
+        const userId = req.user.id;
 
         // validation 
         if(!gender || !phoneNo || !userId){
@@ -59,47 +59,55 @@ exports.updateProfile = async (req,res)=>{
 
 
 // detele account handler function  
-
-// TODO TASK ---->> Explore how can we schedule this deletion operation time ke hissab se 
-
+// TODO TASK ---->> Explore how can we schedule this deletion operation time ke hissab se
 
 exports.deleteAccount = async(req,res)=>{
     try{
 
-        // fetch id 
+        // fetch id
         const id = req.body.id;
 
-        // validate 
+        // validation
         if(!id){
             return res.status(404).json({
-                success :false,
-                message :"User not found!!"
+                success:false,
+                message:"User not found!!"
             })
         }
 
-        // delete profile from user 
-        await Profile.findByIdAndDelete({_id:userDetails.additionalDetails});
+        // find user details
+        const userDetails = await User.findById(id);
 
-        // TODO TASK ----->>> Unenrolled User form all the enrolled course 
+        if(!userDetails){
+            return res.status(404).json({
+                success:false,
+                message:"User does not exist"
+            })
+        }
 
-        // delete user 
-        await User.findByIdAndDelete({_id:id});
+        // delete profile
+        await Profile.findByIdAndDelete(userDetails.additionalDetails);
 
-        // return res 
+        // TODO TASK ----->>> Unenroll user from all enrolled courses
+
+        // delete user
+        await User.findByIdAndDelete(id);
+
+        // return response
         return res.status(200).json({
-            success :true,
-            message : "User Deleted Successully...."
+            success:true,
+            message:"User Deleted Successfully...."
         })
 
     }
     catch(error){
         return res.status(500).json({
-            success: false,
-            message : "user can not deleted account successfully",
-            error : error.message 
+            success:false,
+            message:"User account cannot be deleted",
+            error:error.message
         })
     }
-}
+}           
 
 
 // get user handler function 
@@ -108,16 +116,16 @@ exports.getAllUserDetails = async(req,res)=>{
 
     try{
         // get id 
-        const id = req.body.id;
+        const userId = req.user.id;
 
         // get user details 
-        const  userDetails = await User.findById(id).populate("additionalDetails").exec();
-
+        const  userDetails = await User.findById(userId).populate("additionalDetails").exec();
 
         // return response  
         return res.status(200).json({
             success: true,
-            message : "User Data fetched successfully...."
+            message : "User Data fetched successfully....",
+            userDetails
         })
     }
     catch(error){
