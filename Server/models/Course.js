@@ -1,8 +1,7 @@
-const { default: mongoose } = require('mongoose');
-const monogoose = require('mongoose');
+const mongoose = require('mongoose');
 // const Category = require('./Category');
 
-const courseSchema = new monogoose.Schema({
+const courseSchema = new mongoose.Schema({
 
     courseName:{
         type:String,
@@ -19,17 +18,17 @@ const courseSchema = new monogoose.Schema({
         ref:"User"
     }, 
 
-    whatWillLearn:{
+    whatWillYouLearn:{
         type:String,
         required:true,
         trim:true
     },
 
 
-    courseContent:{
+    courseContent:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Section"
-    },
+    }],
 
     ratingAndreview:{
         type:mongoose.Schema.Types.ObjectId,

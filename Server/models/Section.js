@@ -1,16 +1,15 @@
-const { default: mongoose } = require('mongoose');
-const monogoose = require('mongoose');
+const mongoose = require('mongoose');
 
-const sectionSchema = new monogoose.Schema({
+const sectionSchema = new mongoose.Schema({
 
     sectionName:{
         type:String
     },
 
-    subSection:{
+    subSection:[{
         type:mongoose.Schema.Types.ObjectId,
         ref: "SubSection"
-    },
+    }],
 
 })
 

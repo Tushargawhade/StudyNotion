@@ -1,18 +1,17 @@
-const { default: mongoose } = require('mongoose');
-const monogoose = require('mongoose');
+const mongoose = require('mongoose');
 
-const courseProgessSchema = new monogoose.Schema({
+const courseProgessSchema = new mongoose.Schema({
 
     courseId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course"
     },
 
-    completeVideo:{
+    completeVideo:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: "SubSection",
 
-    },
+    }],
 })
 
 module.exports = mongoose.model("CourseProgress",courseProgessSchema)

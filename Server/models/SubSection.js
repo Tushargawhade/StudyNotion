@@ -1,7 +1,6 @@
-const { default: mongoose } = require('mongoose');
-const monogoose = require('mongoose');
+const mongoose = require('mongoose');
 
-const subSectionSchema = new monogoose.Schema({
+const subSectionSchema = new mongoose.Schema({
 
     title:{
         type:String

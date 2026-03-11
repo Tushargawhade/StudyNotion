@@ -1,7 +1,6 @@
-const { default: mongoose } = require('mongoose');
-const monogoose = require('mongoose');
+const mongoose = require('mongoose');
 
-const ratingAndreviewSchema = new monogoose.Schema({
+const ratingAndreviewSchema = new mongoose.Schema({
 
     user:{
         type:mongoose.Schema.Types.ObjectId,

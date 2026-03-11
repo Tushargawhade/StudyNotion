@@ -1,7 +1,6 @@
-const { default: mongoose } = require('mongoose');
-const monogoose = require('mongoose');
+const mongoose = require('mongoose');
 
-const profileSchema = new monogoose.Schema({
+const profileSchema = new mongoose.Schema({
 
     gender:{
         type:String

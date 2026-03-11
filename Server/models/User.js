@@ -36,11 +36,11 @@ const userSchema = new mongoose.Schema({
         ref:"Profile"
     },
 
-    courses:{
+    courses:[{
         type: mongoose.Schema.Types.ObjectId,
         required:true,
         ref: "Course"
-    },
+    }],
 
     image:{
         type:String,
@@ -55,11 +55,11 @@ const userSchema = new mongoose.Schema({
         type : Date,
     },
 
-    cousesprogress:{
-        type: monogoose.Schema.Types.ObjectId,
+    cousesprogress:[{
+        type: mongoose.Schema.Types.ObjectId,
         required:true,
         ref: "CourseProgress"
-    },
+    }],
 
     contactNumber:{
         type: Number
