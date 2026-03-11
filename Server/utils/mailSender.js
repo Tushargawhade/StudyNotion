@@ -10,12 +10,12 @@ const mailSender  = async (email, title, body)=>{
             host: process.env.MAIL_HOST,
             auth:{
                 user: process.env.MAIL_USER,
-                pass: process.env.MAIL_PASS
+                pass: process.env.MAIL_PASS,
             }
         })
 
         let info = await transporter.sendMail({
-            from: "Study Notion ---- TusharG",
+            from: "Study Notion ---- TusharGawhade",
             to: `${email}`,
             subject: `${title}`,
             html: `${body}`
@@ -26,7 +26,7 @@ const mailSender  = async (email, title, body)=>{
 
     }
     catch(error){
-        console.log(error.message);
+        console.log("send mail mai dikaat hai",error.message);
     }
 }
 

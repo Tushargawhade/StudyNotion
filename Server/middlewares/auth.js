@@ -3,13 +3,9 @@ const User  = require('../models/User');
 require('dotenv').config();
 
 
-
-
 // auth 
-
 exports.auth = async(req,res,next)=>{
     try{
-
         // Extract Token 
         const token = req.cookies.token
                             || req.body.token 
@@ -22,7 +18,6 @@ exports.auth = async(req,res,next)=>{
                     message : "Token is missing"
                 })
         }
-
         // Verify token 
         try{
             const decode =  jwt.verify(token, process.env.JWT_SECTER);
@@ -36,11 +31,8 @@ exports.auth = async(req,res,next)=>{
                 message : "token is invalid"
             })
         }
-
         next();
     }
-
-
     catch(error){
         console.log("Authentication failure...");
         return res.status(500).json({
@@ -50,14 +42,9 @@ exports.auth = async(req,res,next)=>{
     }
 }
 
-
-
 // isstudent
-
-exports.isStudent = async(res, req, next)=> {
-
+exports.isStudent = async(req,res,next)=> {
     try{
-
         if(req.user.accountType !== "Student"){
             return res.status(401).json({
                 success : false,
@@ -75,13 +62,9 @@ exports.isStudent = async(res, req, next)=> {
     }
 }
 
-
-
 // isinstructor
-exports.isInstructor = async(res, req, next)=> {
-
+exports.isInstructor = async(req,res,next)=> {
     try{
-
         if(req.user.accountType !== "Instructor"){
             return res.status(401).json({
                 success : false,
@@ -99,12 +82,9 @@ exports.isInstructor = async(res, req, next)=> {
     }
 } 
 
-
 // isadmin 
-exports.isAdmin = async(res, req, next)=> {
-
+exports.isAdmin = async(req,res,next)=> {
     try{
-
         if(req.user.accountType !== "Admin"){
             return res.status(401).json({
                 success : false,
