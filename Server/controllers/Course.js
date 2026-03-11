@@ -15,7 +15,7 @@ exports.createCourse = async (req,res)=>{
         const {courseName, courseDescription, whatWillYouLearn, price, category } = req.body;
 
         // fetch thumbnail
-        const thumbnail = req.files.thumbnaliImage;
+        const thumbnail = req.files.thumbnailImage;
 
         // validation 
         if(!courseName || !courseDescription || !whatWillYouLearn || !price || !category || !thumbnail){
@@ -43,7 +43,7 @@ exports.createCourse = async (req,res)=>{
 
 
         // check given tag is valid or not  
-        const categoryDetails  = await Category.findById(tag);
+        const categoryDetails  = await Category.findById(category);
         if(!categoryDetails){
             return res.status(404).json({
                 success : false,
@@ -113,18 +113,16 @@ exports.createCourse = async (req,res)=>{
 
 
 // Get All course handler function  
-exports.showAllCourses = async (req,res)=>{
-
+exports.getAllCourses = async (req,res)=>{
     try{
-
         const allCourses = await Course.find({},
                                                 {courseName : true,
                                                  price : true,
                                                  thumbnail :true,
                                                  instructor : true,
                                                  ratingAndreview :true,
-                                                 studentEnrolled : true},)
-                                                .populate("Instructor")
+                                                 studentEnrolled : true})
+                                                .populate("instructor")
                                                 .exec();
 
         return res.status(200).json({
@@ -139,10 +137,9 @@ exports.showAllCourses = async (req,res)=>{
             message : "Cannot fetch the all courses!!"
         })
     }
-
-
-
 }
+
+
 
 
 // Show all detail of a single course handler function

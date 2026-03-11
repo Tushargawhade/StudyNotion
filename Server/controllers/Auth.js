@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const OTP = require("../models/OTP");
 const otpGenerator = require('otp-generator');
-const bcrpt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const jwt =  require("jsonwebtoken");
 const mailSender = require("../utils/mailSender");
 const Profile = require("../models/Profile");
@@ -10,7 +10,7 @@ require('dotenv').config();
 
 
 
-// send otp fuunction
+// send otp function
 exports.otp = async (req, res) => {
   try {
     // fetch email from req body
@@ -33,7 +33,7 @@ exports.otp = async (req, res) => {
         upperCaseAlphabets : false,
         specialChars : false
     });
-    console.log("otp generated -> ",otp);
+    console.log("otp generated hua-> ",otp);
 
     // check otp is unique or not
     const result = await OTP.findOne({otp: otp});
@@ -61,16 +61,18 @@ exports.otp = async (req, res) => {
     // return successful response  
     res.status(200).json({
         status : true,
-        message: "OTP sent successfully.."
+        message: "OTP sent successfully..",
+        otp : otpBody.otp,
+
     })
 
   } 
-  catch(error){
 
-    console.log(error);
+  catch(error){
+    console.log("Error while sending OTP : ",error);
     return res.status(500).json({
-        status: false,
-        message : error.message
+        success: false,
+        message : error.message,
     })
 
 
@@ -79,11 +81,9 @@ exports.otp = async (req, res) => {
 
 
 
-
 // signup function
 exports.signup = async (req,res)=>{
     try{
-
       // data fetch 
       const {
         firstName,
@@ -91,7 +91,7 @@ exports.signup = async (req,res)=>{
         email,
         password,
         confirmPassword,
-        accontType,
+        accountType,
         contactNumber,
         otp,
       }   = req.body;
@@ -115,7 +115,7 @@ exports.signup = async (req,res)=>{
       }
 
       // check user already exist or not 
-      const existingUser  =  await  User.findOne({email})
+      const existingUser  =  await User.findOne({email})
       if(existingUser){
         return res.status(400).json({
           success: false,
@@ -127,17 +127,17 @@ exports.signup = async (req,res)=>{
 
       // find most recent otp stored for the user
       const recentOtp =  await OTP.findOne({email}).sort({createdAt:-1}).limit(1);
-      console.log(recentOtp);
+      console.log("recent otp -> ",recentOtp.otp);
     
 
       // validate otp 
-      if(recentOtp.length == 0){
+      if(!recentOtp){
         return res.status(400).json({
           success: false,
           messsage : "OTP not found "
         })
       } 
-      else if(otp !== recentOtp){
+      else if(Number(otp) !== recentOtp.otp){
         return res.status(400).json({
           success: false,
           messsage : "OTP invalid "
@@ -147,7 +147,7 @@ exports.signup = async (req,res)=>{
 
 
       // hash password
-      const hashedPassword = await bcrpt.hash(password,10)
+      const hashedPassword = await bcrypt.hash(password,10)
       
       // change 
       // create the user 
@@ -168,7 +168,7 @@ exports.signup = async (req,res)=>{
         lastName,
         email,
         password: hashedPassword,
-        accountType: accontType,
+        accountType: accountType,
         additionalDetails: profilDetails._id,
         contactNumber,
         approved : approved,
@@ -186,7 +186,6 @@ exports.signup = async (req,res)=>{
     }
     catch(error){
       console.log("Something went wrong in signUp")
-
       return res.status(500).json({
         success: false,
         message : "User can not Registerd Successfully Try again!! "
@@ -224,7 +223,7 @@ exports.login = async (req,res) =>{
 
 
       //if yes verify password  and generate jwt token 
-      if(await bcrpt.compare(password , user.password)){
+      if(await bcrypt.compare(password , user.password)){
         
         const payload = {
           email : user.email,
@@ -232,7 +231,7 @@ exports.login = async (req,res) =>{
           accountType  : user.accountType
         }
 
-        const token = jwt.sign(payload ,  process.env.JWT_SECTER,{
+        const token = jwt.sign(payload,  process.env.JWT_SECTER,{
           expiresIn : "2h",
         });
 
@@ -247,11 +246,11 @@ exports.login = async (req,res) =>{
         }
 
 
-        res.cookies("token",token,options).json({
-          success : false,
+        res.cookie("token",token,options).json({
+          success : true,
           token,
           user,
-          message : "User Loggin Successfully"
+          message : "User Loggin Successfully",
         })
 
       }
@@ -265,7 +264,6 @@ exports.login = async (req,res) =>{
     }
     catch(error){
       console.log("Error occure on login");
-
       return res.status(500).json({
         success: false,
         message : error.message
