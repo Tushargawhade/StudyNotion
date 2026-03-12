@@ -1,12 +1,21 @@
 import "./App.css"
+import { Route,Routes } from "react-router-dom";
+import Home from "./pages/Home";
 
 function App() {
   return (
-    <div className="bg-richblack-900 text-white h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-yellow-50">
-        Study Notion
-      </h1>
+    
+    <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
+      <Routes>
+
+        <Route path="/" element={<Home/>} />
+
+
+      </Routes>
+
+
     </div>
+    
   );
 }
 
