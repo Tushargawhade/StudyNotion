@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import HighlightedText from '../components/core/homepage/HighlightedText';
 import CTAButton from '../components/core/homepage/Button';
 import Banner from '../assets/Images/banner.mp4'
+import CodeBlocks from '../components/core/homepage/CodeBlocks';
+
 
 
 
@@ -13,6 +15,8 @@ const Home = () => {
 
         {/* section 1 */}
         <div className='relative mx-auto max-w-maxContent flex flex-col w-11/12 items-center text-white  '>
+
+            {/* starting part  */}
 
             <Link to={"/signup"}>
 
@@ -60,6 +64,102 @@ const Home = () => {
 
             </div>
 
+
+            {/* first coding part  */}
+
+            <div className='flex flex-col gap-4'>
+
+                <CodeBlocks
+                    position={"flex-row"} 
+                    heading={ 
+                        <div className='text-4xl font-semibold'>
+                            Unlock your 
+                            <HighlightedText text={"coding potential "} />
+                            with your online courses.
+                        </div>
+                    }
+                    subheading={"Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you."}
+
+                    ctabtn1={
+                        {
+                            btnText: "try it yourself ",
+                            linkto: "/signup",
+                            active : true
+                        }
+                    }
+
+                    ctabtn2={
+                        {
+                            btnText: "learn more",
+                            linkto: "/login",
+                            active : false
+                        }
+                    }
+                    
+                    codeblock={`<!DOCTYPE html>\n <html lang="en">\n<head>\n<title>This is myPage</title>\n</head>\n<body>\n<h1><a href="/">Header</a></h1>\n<nav> <a href="/one">One</a> <a href="/two">Two</a> <a href="/three">Three</a>\n</nav>\n</body>`}
+                    
+                    codecolor={"text-yellow-25"}
+                />
+
+
+                 <CodeBlocks
+                    position={"flex-row-reverse"} 
+                    heading={ 
+                        <div className='text-4xl font-semibold'>
+                            Start
+                            <HighlightedText text={"coding in seconds "} />
+                        </div>
+                    }
+                    subheading={"Go ahead, give it a try. Our hands-on learning environment means you'll be writing real code from your very first lesson."}
+
+                    ctabtn1={
+                        {
+                            btnText: "Continue Lesson",
+                            linkto: "/signup",
+                            active : true
+                        }
+                    }
+
+                    ctabtn2={
+                        {
+                            btnText: "Learn More",
+                            linkto: "/login",
+                            active : false
+                        }
+                    }
+                    
+                    codeblock={`<!DOCTYPE html>\n <html lang="en">\nhead><title>Example</title><linkrel="stylesheet"href="styles.css"> \n/head> \nbody> \nh1><ahref="/">Header</a> \n/h1>\nnav><ahref="one/">One</a><ahref="two/">Two</a><ahref="three/">Three</a>\n</nav>`}
+                    
+                    codecolor={"text-blue-25"}
+                />
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
 
 
         </div>
