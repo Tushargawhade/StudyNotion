@@ -8,7 +8,7 @@ import CodeBlocks from '../components/core/homepage/CodeBlocks';
 import TimeLineSection from '../components/core/homepage/TimeLineSection';
 import LearningLanguageSection from '../components/core/homepage/LearningLanguageSection';
 import InstructorSection from '../components/core/homepage/InstructorSection';
-
+import ExploreMore from '../components/core/homepage/ExploreMore'
 
 const Home = () => {
   return (
@@ -135,6 +135,13 @@ const Home = () => {
                 />
 
             </div>
+            
+
+            <ExploreMore />
+ 
+
+
+
 
         </div>
 
