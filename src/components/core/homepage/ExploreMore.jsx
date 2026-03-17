@@ -49,7 +49,7 @@ const ExploreMore = () => {
             tabsName.map((elem,idx)=>{
                 return (
                     <div 
-                    className={`text-[16px] flex items-center gap-2 rounded-full transition-all duration-200 cursor-pointer hover:bg-richblack-900  hover:text-richblack-5 px-7 py-2 ${currentTab === elem ? "bg-richblack-900 text-richblack-5 font-medium"  : "text-richblue-50"}`}
+                    className={`text-[16px] flex items-center gap-2 rounded-full transition-all duration-200 cursor-pointer hover:bg-richblack-900  hover:text-richblack-5 px-6 py-2 ${currentTab === elem ? "bg-richblack-900 text-richblack-5 font-medium"  : "text-richblue-50"}`}
                     key={idx}
                     onClick={()=> setMyCards(elem)}
                     >
