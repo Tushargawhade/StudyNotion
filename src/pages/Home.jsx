@@ -59,7 +59,6 @@ const Home = () => {
 
                 <video muted loop autoPlay>
                     <source src={Banner} type="video/mp4" />
-
                 </video>
 
 
@@ -153,11 +152,11 @@ const Home = () => {
             <div className='homepage_bg h-[310px]'>
 
                    <div className='w-11/12 max-w-maxContent flex flex-col items-center justify-center gap-5 mx-auto'>
-                        <div className='h-[95px]'>
+                        <div className='h-[180px]'>
 
                         </div>
 
-                        <div className='flex  gap-8 text-white'>
+                        <div className='flex  mt-6 gap-8 text-white'>
 
                             <CTAButton active={true} linkto={"/signup"}  >
                                 <div className='flex gap-3 items-center'>
@@ -178,7 +177,7 @@ const Home = () => {
 
             <div className='w-11/12 max-w-maxContent flex flex-col items-center justify-center gap-7 mx-auto mb-10 mt-10'>
                 
-                <div className='flex gap-16'>
+                <div className='flex gap-16 '>
 
                     <div className='text-4xl font-semibold w-[45%]'>
                         Get the skills you need for a

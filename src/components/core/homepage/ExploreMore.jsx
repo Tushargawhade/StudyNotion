@@ -44,7 +44,7 @@ const ExploreMore = () => {
             Learn to build anything you can imagine 
         </p>
 
-        <div className='mt-5 mb-6 px-1 py-1 flex rounded-full bg-richblack-800 border-richblack-400 '>
+        <div className='mt-5 mb-12 px-1 py-1 flex rounded-full bg-richblack-800 border-richblack-400 '>
         {
             tabsName.map((elem,idx)=>{
                 return (
@@ -65,7 +65,7 @@ const ExploreMore = () => {
 
         {/* courses kee card */}
 
-        <div className='absolute flex gap-10 justify-between w-full p-2'>
+        <div className="lg:absolute mt-4 gap-10 justify-center lg:gap-0 flex lg:justify-between flex-wrap w-full lg:bottom-[0] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[50%] text-black lg:mb-0 mb-7 lg:px-0 px-3">
 
             {
                 course.map((elem,idx)=>{
