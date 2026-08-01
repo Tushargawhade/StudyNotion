@@ -30,6 +30,16 @@ const userSchema = new mongoose.Schema({
         enum:["Admin","Student","Instructor"]
     },
 
+    active:{
+        type: Boolean,
+        default: true,
+    },
+
+    approved:{
+        type: Boolean,
+        default: true,
+    },
+
     additionalDetails:{
         type: mongoose.Schema.Types.ObjectId,
         required:true,
@@ -55,9 +65,8 @@ const userSchema = new mongoose.Schema({
         type : Date,
     },
 
-    cousesprogress:[{
+    courseProgress:[{
         type: mongoose.Schema.Types.ObjectId,
-        required:true,
         ref: "CourseProgress"
     }],
 

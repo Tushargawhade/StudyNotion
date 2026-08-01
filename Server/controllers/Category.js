@@ -1,120 +1,119 @@
-const Category = require("../models/Category")
+const Category = require("../models/Category");
 
-// create category handler function  
+const getRandomInt = (max) => {
+  return Math.floor(Math.random() * max);
+};
 
-exports.createCategory = async (req, res) =>{
-    try{
-        // fetch data 
-        const {name, description } = req.body;
+// create category handler function
+exports.createCategory = async (req, res) => {
+  try {
+    const { name, description } = req.body;
 
-        // validation 
-        if(!name || !description ){
-            return res.status(400).json({
-                success : false,
-                message : "All feilds data required"
-            })
-        }
-
-        // create entry in db 
-        const categoryDetails = await Category.create({
-            name: name,
-            description : description,
-        })
-        console.log(categoryDetails)
-
-        // return response 
-        return res.status(200).json({
-            success : true,
-            message : "Category created successfully"
-        })
-    }
-    catch(error){
-        return res.status(500).json({
-            success : false,
-            message : error.message
-        })
+    if (!name) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
     }
 
-}
+    const categoryDetails = await Category.create({
+      name: name,
+      description: description || "",
+    });
 
-// Show All category handler function 
+    return res.status(200).json({
+      success: true,
+      message: "Category created successfully",
+      data: categoryDetails,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
-exports.showAllCategory = async (req,res)=>{
-    try{
+// Show all category handler function
+exports.showAllCategory = async (req, res) => {
+  try {
+    const allCategory = await Category.find({}, { name: true, description: true });
 
-        // find all the category from db and (name and description (true hona chaiye))
-        const allCategory = await Category.find({},{name : true, description:true});
-        
-        // return response 
-        return res.status(200).json({
-            success: true,
-            messsage : "All category return successfully",
-            allCategory
-        })
-        
+    return res.status(200).json({
+      success: true,
+      message: "All categories returned successfully",
+      data: allCategory,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// categoryPageDetails handle function
+exports.categoryPageDetails = async (req, res) => {
+  try {
+    const { categoryId } = req.body;
+
+    const selectedCategory = await Category.findById(categoryId)
+      .populate({
+        path: "courses",
+        match: { status: "Published" },
+        populate: { path: "ratingAndReviews" },
+      })
+      .exec();
+
+    if (!selectedCategory) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
     }
-    catch(error){
-        return res.status(500).json({
-            success : false,
-            message : error.message
-        })
+
+    if (selectedCategory.courses.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No courses found for the selected category",
+      });
     }
 
+    const categoriesExceptSelected = await Category.find({ _id: { $ne: categoryId } });
 
-
-
-}
-
-
-// catergoryPageDetails handle function 
-exports.categoryPageDetails = async(req,res)=>{
-
-    try{
-
-        // get categoryId
-        const {categoryId} = req.body;
-
-        // get courses for specified categoryId
-        const selectedCategory = await Category.findById(categoryId)
-                                                .populate("courses")
-                                                .exec();
-                                    
-
-        // validation 
-        if(!selectedCategory){
-            return res.status(404).json({
-                success : false,
-                message :"categry not found"
-            })
-        }
-
-        // get course for different category 
-        const differentCategory = await Category.find({
-                                                    _id : {$ne : categoryId},
-                                                })
-                                                .populate("courses")
-                                                .exec();
-
-
-
-        // get top 10 selling Course
-        
-
-        // return res 
-        return res.status(200).json({
-            success : true,
-            data :{
-                selectedCategory,
-                differentCategory
-            }
+    let differentCategory = null;
+    if (categoriesExceptSelected.length > 0) {
+      const randomIndex = getRandomInt(categoriesExceptSelected.length);
+      differentCategory = await Category.findById(categoriesExceptSelected[randomIndex]._id)
+        .populate({
+          path: "courses",
+          match: { status: "Published" },
         })
+        .exec();
     }
-    catch(error){
-        console.log(error);
 
-        return res.status(500).json({
-            success : false,
-            message : error.message
-        })
-    }
-}
+    const allCategories = await Category.find()
+      .populate({
+        path: "courses",
+        match: { status: "Published" },
+        populate: { path: "instructor" },
+      })
+      .exec();
+
+    const allCourses = allCategories.flatMap((category) => category.courses);
+    const mostSellingCourses = allCourses
+      .sort((a, b) => b.studentsEnrolled.length - a.studentsEnrolled.length)
+      .slice(0, 10);
+
+    return res.status(200).json({
+      success: true,
+      message: "Category page details fetched successfully",
+      data: { selectedCategory, differentCategory, mostSellingCourses },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
