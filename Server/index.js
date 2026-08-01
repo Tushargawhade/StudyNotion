@@ -4,6 +4,7 @@ const app = express();
 const courseRouter = require("./routes/Courses");
 const profileRouter = require('./routes/Profile');
 const userRouter = require('./routes/User');
+const contactRouter = require('./routes/Contact');
 
 
 const {connect} = require('./config/database');
@@ -47,6 +48,7 @@ app.use(
 app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/course", courseRouter);
 app.use("/api/v1/profile", profileRouter);
+app.use("/api/v1/contact", contactRouter);
 
 
 
