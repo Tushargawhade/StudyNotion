@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt =  require("jsonwebtoken");
 const mailSender = require("../utils/mailSender");
 const Profile = require("../models/Profile");
-const {passwordUpdate} = require("../mail/passwordUpdate");
+const {passwordUpdated} = require("../mail/passwordUpdate");
 require('dotenv').config();
 
 
@@ -152,7 +152,7 @@ exports.signup = async (req,res)=>{
       // change 
       // create the user 
       let approved = "";
-      approved === "Instructor" ? (approved = false) : (approved = true);
+      accountType === "Instructor" ? (approved = false) : (approved = true);
 
 
       // enrty create in db 

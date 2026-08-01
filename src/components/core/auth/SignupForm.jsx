@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { toast } from "react-hot-toast"
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
 import { sendOtp } from "../../../services/operations/authAPI"
@@ -12,6 +12,7 @@ import Tab from "../../common/Tab"
 function SignupForm() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { loading } = useSelector((state) => state.auth)
 
   // student or instructor
   const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT)
@@ -43,6 +44,15 @@ function SignupForm() {
 
     if (password !== confirmPassword) {
       toast.error("Passwords Do Not Match")
+      return
+    }
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters long")
+      return
+    }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailPattern.test(email)) {
+      toast.error("Please enter a valid email address")
       return
     }
     const signupData = {
@@ -127,18 +137,18 @@ function SignupForm() {
           <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
             Email Address <sup className="text-pink-200">*</sup>
           </p>
-          <input
-            required
-            type="text"
-            name="email"
-            value={email}
-            onChange={handleOnChange}
-            placeholder="Enter email address"
-            style={{
-              boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
-            }}
-            className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-5"
-          />
+            <input
+              required
+              type="email"
+              name="email"
+              value={email}
+              onChange={handleOnChange}
+              placeholder="Enter email address"
+              style={{
+                boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
+              }}
+              className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-5 focus:outline-none focus:ring-2 focus:ring-yellow-50"
+            />
         </label>
         <div className="flex gap-x-4">
           <label className="relative">
@@ -198,9 +208,10 @@ function SignupForm() {
         </div>
         <button
           type="submit"
-          className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
+          disabled={loading}
+          className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900 transition-all duration-200 hover:bg-yellow-25 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Create Account
+          {loading ? "Sending OTP..." : "Create Account"}
         </button>
       </form>
     </div>

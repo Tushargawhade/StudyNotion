@@ -33,7 +33,7 @@ exports.resetPasswordToken  = async (req, res)=>{
 
 
     // create url 
-    const url =  `https://local:3000/update-password/${token}`
+    const url =  `http://localhost:3000/update-password?token=${token}`
 
 
     // send mail containg url
@@ -99,7 +99,9 @@ exports.resetPassword = async(req,res)=>{
         // password update 
         await User.findOneAndUpdate(
                     {token : token},
-                    {password : hashedPassword},
+                    {password : hashedPassword,
+                     token : undefined,
+                     resetPasswordExpires : undefined},
                     {new : true}
                 )
 

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 
 import { login } from "../../../services/operations/authAPI"
@@ -8,6 +8,7 @@ import { login } from "../../../services/operations/authAPI"
 function LoginForm() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { loading } = useSelector((state) => state.auth)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -40,7 +41,7 @@ function LoginForm() {
         </p>
         <input
           required
-          type="text"
+          type="email"
           name="email"
           value={email}
           onChange={handleOnChange}
@@ -48,7 +49,7 @@ function LoginForm() {
           style={{
             boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
           }}
-          className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-5"
+          className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-5 focus:outline-none focus:ring-2 focus:ring-yellow-50"
         />
       </label>
       <label className="relative">
@@ -65,7 +66,7 @@ function LoginForm() {
           style={{
             boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
           }}
-          className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] pr-12 text-richblack-5"
+          className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] pr-12 text-richblack-5 focus:outline-none focus:ring-2 focus:ring-yellow-50"
         />
         <span
           onClick={() => setShowPassword((prev) => !prev)}
@@ -85,9 +86,10 @@ function LoginForm() {
       </label>
       <button
         type="submit"
-        className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
+        disabled={loading}
+        className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900 transition-all duration-200 hover:bg-yellow-25 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        Sign In
+        {loading ? "Signing in..." : "Sign In"}
       </button>
     </form>
   )

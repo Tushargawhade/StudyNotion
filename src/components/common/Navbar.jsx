@@ -6,8 +6,6 @@ import { IoCartOutline } from "react-icons/io5";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import { useSelector } from 'react-redux';
 import ProfileDropDown from '../core/auth/ProfileDropDown';
-import { apiConnector } from '../../services/apiconnector';
-import { categories } from '../../services/apis';
 
 
 
@@ -125,7 +123,7 @@ const Navbar = () => {
             <div className='flex gap-x-5 items-center'>
 
                 {
-                    user && user?.accountType != "Instructor" && (
+                    user && user?.accountType !== "Instructor" && (
                         <Link to={"/dashboard/cart"} className='relative'>
                             <IoCartOutline />
                             {
