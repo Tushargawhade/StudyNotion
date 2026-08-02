@@ -1,10 +1,9 @@
 import { toast } from "react-hot-toast";
 import { apiConnector } from "../apiconnector";
-import {
-  UPDATE_PROFILE_API,
-  UPDATE_DISPLAY_PICTURE_API,
-  CHANGE_PASSWORD_API,
-} from "../apis";
+import { endpoints } from "../apis";
+
+const { UPDATE_PROFILE_API, UPDATE_DISPLAY_PICTURE_API, CHANGE_PASSWORD_API } =
+  endpoints;
 
 export async function updateProfile(token, formData) {
   const result = await apiConnector(

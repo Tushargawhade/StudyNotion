@@ -8,26 +8,103 @@ import VerifyEmail from "./pages/VerifyEmail";
 import ForgotPassword from "./pages/ForgotPassword";
 import UpdatePassword from "./pages/UpdatePassword";
 import Contact from "./pages/Contact";
+import OpenRoute from "./components/core/auth/OpenRoute";
+import PrivateRoute from "./components/core/auth/PrivateRoute";
+import Dashboard from "./pages/Dashboard";
+import DashboardPlaceholder from "./pages/DashboardPlaceholder";
 
 function App() {
   return (
-
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
-
-      <Navbar/>
+      <Navbar />
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/update-password" element={<UpdatePassword />} />
+
+        <Route
+          path="/login"
+          element={
+            <OpenRoute>
+              <Login />
+            </OpenRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <OpenRoute>
+              <Signup />
+            </OpenRoute>
+          }
+        />
+        <Route
+          path="/verify-email"
+          element={
+            <OpenRoute>
+              <VerifyEmail />
+            </OpenRoute>
+          }
+        />
+        <Route
+          path="/forgot-password"
+          element={
+            <OpenRoute>
+              <ForgotPassword />
+            </OpenRoute>
+          }
+        />
+        <Route
+          path="/update-password"
+          element={
+            <OpenRoute>
+              <UpdatePassword />
+            </OpenRoute>
+          }
+        />
         <Route path="/contact" element={<Contact />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        >
+          <Route index element={<Navigate to="my-profile" replace />} />
+          <Route
+            path="my-profile"
+            element={<DashboardPlaceholder title="My Profile" />}
+          />
+          <Route
+            path="settings"
+            element={<DashboardPlaceholder title="Settings" />}
+          />
+          <Route
+            path="instructor"
+            element={<DashboardPlaceholder title="Instructor Dashboard" />}
+          />
+          <Route
+            path="my-courses"
+            element={<DashboardPlaceholder title="My Courses" />}
+          />
+          <Route
+            path="add-course"
+            element={<DashboardPlaceholder title="Add Course" />}
+          />
+          <Route
+            path="enrolled-courses"
+            element={<DashboardPlaceholder title="Enrolled Courses" />}
+          />
+          <Route
+            path="purchase-history"
+            element={<DashboardPlaceholder title="Purchase History" />}
+          />
+        </Route>
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
-
   );
 }
 

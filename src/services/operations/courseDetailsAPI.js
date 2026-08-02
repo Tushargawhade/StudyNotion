@@ -1,12 +1,13 @@
 import { toast } from "react-hot-toast";
 import { apiConnector } from "../apiconnector";
-import {
+import { endpoints, categories } from "../apis";
+
+const {
   COURSE_DETAILS_API,
   RATING_API,
   REVIEWS_API,
   GET_CATEGORY_DETAILS_API,
-  categories,
-} from "../apis";
+} = endpoints;
 
 export async function fetchCourseDetails(courseId) {
   const result = await apiConnector("POST", COURSE_DETAILS_API, { courseId });

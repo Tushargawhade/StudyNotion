@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
 import HighlightedText from "../components/core/homepage/HighlightedText";
 import { submitContact } from "../services/operations/contactAPI";
-import Footer from "../components/common/Footer";
 
 function Contact() {
   const { user } = useSelector((state) => state.profile);

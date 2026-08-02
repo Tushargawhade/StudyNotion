@@ -1,6 +1,8 @@
 import { toast } from "react-hot-toast";
 import { apiConnector } from "../apiconnector";
-import { DEMO_ENROLL_API } from "../apis";
+import { endpoints } from "../apis";
+
+const { DEMO_ENROLL_API } = endpoints;
 
 export async function enrollCourse(token, courseId) {
   const result = await apiConnector(

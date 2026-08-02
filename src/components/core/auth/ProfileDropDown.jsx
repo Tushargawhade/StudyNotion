@@ -1,11 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineCaretDown } from "react-icons/ai";
-import { FiLogOut } from "react-icons/fi";
-import { VscDashboard } from "react-icons/vsc";
+import { VscSignOut } from "react-icons/vsc";
+import { FiEdit3 } from "react-icons/fi";
+import { FaCircleUser } from "react-icons/fa6";
 
 import { logout } from "../../../services/operations/authAPI";
+import ConfirmationModal from "../../common/ConfirmationModal";
+import useOnClickOutside from "../../../hooks/useOnClickOutside";
 
 function ProfileDropDown() {
   const { user } = useSelector((state) => state.profile);
@@ -13,64 +16,76 @@ function ProfileDropDown() {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const [confirmationModal, setConfirmationModal] = useState(null);
+  const ref = useRef(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  useOnClickOutside(ref, () => setOpen(false));
+
+  if (!user) return null;
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative">
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center gap-x-2 rounded-full"
+        className="flex items-center gap-x-1"
       >
         <img
           src={
             user?.image ||
-            `https://api.dicebear.com/5.x/initials/svg?seed=${user?.firstName || "User"} ${user?.lastName || ""}`
+            `https://api.dicebear.com/5.x/initials/svg?seed=${user.firstName} ${user.lastName}`
           }
-          alt="Profile"
-          className="h-8 w-8 rounded-full object-cover"
+          alt="profile"
+          className="aspect-square w-[30px] rounded-full object-cover"
         />
-        <AiOutlineCaretDown
-          className={`text-richblack-25 transition-all duration-200 ${
-            open ? "rotate-180" : ""
-          }`}
-        />
+        <AiOutlineCaretDown className="text-sm text-richblack-100" />
       </button>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+8px)] z-[999] w-[200px] rounded-md border border-richblack-700 bg-richblack-800 p-3 text-richblack-100 shadow-lg">
-          <button
+        <div
+          ref={ref}
+          onClick={(e) => e.stopPropagation()}
+          className="absolute right-0 top-[118%] z-[1000] divide-y-[1px] divide-richblack-700 overflow-hidden rounded-md border-[1px] border-richblack-700 bg-richblack-800"
+        >
+          <div
             onClick={() => {
               setOpen(false);
               navigate("/dashboard/my-profile");
             }}
-            className="flex w-full items-center gap-x-2 rounded-md px-2 py-2 text-left text-sm transition-all hover:bg-richblack-700 hover:text-richblack-5"
+            className="flex w-full cursor-pointer items-center gap-x-4 px-[12px] py-[10px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25"
           >
-            <VscDashboard className="text-lg" />
-            Dashboard
-          </button>
-          <div className="my-2 h-[1px] bg-richblack-700"></div>
-          <button
+            <FaCircleUser className="text-lg" />
+            My Profile
+          </div>
+          <div
             onClick={() => {
               setOpen(false);
-              dispatch(logout(navigate));
+              navigate("/dashboard/settings");
             }}
-            className="flex w-full items-center gap-x-2 rounded-md px-2 py-2 text-left text-sm text-pink-100 transition-all hover:bg-richblack-700"
+            className="flex w-full cursor-pointer items-center gap-x-4 px-[12px] py-[10px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25"
           >
-            <FiLogOut className="text-lg" />
+            <FiEdit3 className="text-lg" />
+            Settings
+          </div>
+          <div
+            onClick={() =>
+              setConfirmationModal({
+                text1: "Are you sure?",
+                text2: "You will be logged out of your account.",
+                btn1Text: "Logout",
+                btn2Text: "Cancel",
+                btn1Handler: () => dispatch(logout(navigate)),
+                btn2Handler: () => setConfirmationModal(null),
+              })
+            }
+            className="flex w-full cursor-pointer items-center gap-x-4 px-[12px] py-[10px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-pink-200"
+          >
+            <VscSignOut className="text-lg" />
             Logout
-          </button>
+          </div>
         </div>
       )}
+
+      {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
     </div>
   );
 }

@@ -1,9 +1,8 @@
 import { toast } from "react-hot-toast";
 import { apiConnector } from "../apiconnector";
-import {
-  FULL_COURSE_DETAILS_API,
-  UPDATE_COURSE_PROGRESS_API,
-} from "../apis";
+import { endpoints } from "../apis";
+
+const { FULL_COURSE_DETAILS_API, UPDATE_COURSE_PROGRESS_API } = endpoints;
 
 export async function getFullCourseDetails(courseId, token) {
   const result = await apiConnector(
