@@ -20,7 +20,7 @@ exports.auth = async(req,res,next)=>{
         }
         // Verify token 
         try{
-            const decode =  jwt.verify(token, process.env.JWT_SECTER);
+            const decode =  jwt.verify(token, process.env.JWT_SECRET);
             console.log(decode);
             req.user = decode;
         }

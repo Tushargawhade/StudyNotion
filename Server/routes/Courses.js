@@ -6,6 +6,8 @@ const { createCourse, editCourse, deleteCourse, getInstructorCourses, getFullCou
 
 const { updateCourseProgress } = require("../controllers/courseProgress")
 
+const { demoEnroll } = require("../controllers/Enrollment")
+
 // Categories Controllers Import
 const { showAllCategory, createCategory, categoryPageDetails } = require("../controllers/Category")
 
@@ -62,6 +64,9 @@ router.post("/getCourseDetails", getCourseDetails)
 
 // Update Course Progress
 router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress)
+
+// Demo Enrollment (no payment, for demo purposes)
+router.post("/demoEnroll", auth, isStudent, demoEnroll)
 
 // Category can Only be Created by Admin
 // TODO: Put IsAdmin Middleware here

@@ -79,10 +79,10 @@ function Contact() {
 
         {/* form */}
         <div className="rounded-lg border border-richblack-700 bg-richblack-800 p-8 lg:w-[60%]">
-          <form onSubmit={handleOnSubmit} className="flex flex-col gap-y-4">
+          <form onSubmit={handleOnSubmit} className="flex flex-col gap-y-5">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <label className="w-full">
-                <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
+                <p className="mb-2 text-[0.875rem]  text-richblack-5">
                   Name <sup className="text-pink-200">*</sup>
                 </p>
                 <input
@@ -97,7 +97,7 @@ function Contact() {
                 />
               </label>
               <label className="w-full">
-                <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
+                <p className="mb-2 text-[0.875rem]  text-richblack-5">
                   Email Address <sup className="text-pink-200">*</sup>
                 </p>
                 <input
@@ -112,7 +112,7 @@ function Contact() {
                 />
               </label>
               <label className="w-full">
-                <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
+                <p className="mb-2 text-[0.875rem]  text-richblack-5">
                   Phone Number
                 </p>
                 <input
@@ -126,7 +126,7 @@ function Contact() {
                 />
               </label>
               <label className="w-full">
-                <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
+                <p className="mb-2 text-[0.875rem]  text-richblack-5">
                   Subject
                 </p>
                 <input
@@ -142,7 +142,7 @@ function Contact() {
             </div>
 
             <label className="w-full">
-              <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
+              <p className="mb-2 text-[0.875rem]  text-richblack-5">
                 Message <sup className="text-pink-200">*</sup>
               </p>
               <textarea
@@ -168,7 +168,7 @@ function Contact() {
         </div>
       </div>
 
-      <Footer />
+      
     </div>
   );
 }
