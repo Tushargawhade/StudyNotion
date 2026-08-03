@@ -1,4 +1,5 @@
 const express = require('express');
+const os = require('os');
 const app = express();
 
 const courseRouter = require("./routes/Courses");
@@ -39,7 +40,7 @@ app.use(
 app.use(
     fileUpload({
         useTempFiles : true,
-        tempFileDir : "/tmp"
+        tempFileDir : os.tmpdir()
     })
 )
 

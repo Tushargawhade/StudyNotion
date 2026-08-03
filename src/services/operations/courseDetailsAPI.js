@@ -56,3 +56,130 @@ export async function addRatingAndReview(
 
   toast.success("Rating and review added successfully");
 }
+
+export async function createCourse(formData, token) {
+  const result = await apiConnector("POST", endpoints.CREATE_COURSE_API, formData, {
+    Authorization: `Bearer ${token}`,
+  });
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+  toast.success("Course created successfully");
+  return result.data.data;
+}
+
+export async function editCourse(formData, token) {
+  const result = await apiConnector("POST", endpoints.EDIT_COURSE_API, formData, {
+    Authorization: `Bearer ${token}`,
+  });
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+  toast.success("Course updated successfully");
+  return result.data.data;
+}
+
+export async function deleteCourse(token, courseId) {
+  const result = await apiConnector(
+    "POST",
+    endpoints.DELETE_COURSE_API,
+    { courseId },
+    { Authorization: `Bearer ${token}` }
+  );
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+  toast.success("Course deleted successfully");
+  return result.data;
+}
+
+export async function fetchInstructorCourses(token) {
+  const result = await apiConnector(
+    "GET",
+    endpoints.INSTRUCTOR_COURSES_API,
+    null,
+    { Authorization: `Bearer ${token}` }
+  );
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+  return result.data.data;
+}
+
+export async function createSection(sectionName, courseId, token) {
+  const result = await apiConnector(
+    "POST",
+    endpoints.SECTION_CREATE_API,
+    { sectionName, courseId },
+    { Authorization: `Bearer ${token}` }
+  );
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+  return result.data.data;
+}
+
+export async function updateSection(sectionName, sectionId, courseId, token) {
+  const result = await apiConnector(
+    "POST",
+    endpoints.SECTION_UPDATE_API,
+    { sectionName, sectionId, courseId },
+    { Authorization: `Bearer ${token}` }
+  );
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+  return result.data.data;
+}
+
+export async function deleteSection(sectionId, courseId, token) {
+  const result = await apiConnector(
+    "POST",
+    endpoints.SECTION_DELETE_API,
+    { sectionId, courseId },
+    { Authorization: `Bearer ${token}` }
+  );
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+  return result.data.data;
+}
+
+export async function createSubSection(formData, token) {
+  const result = await apiConnector(
+    "POST",
+    endpoints.SUBSECTION_CREATE_API,
+    formData,
+    { Authorization: `Bearer ${token}` }
+  );
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+  return result.data.data;
+}
+
+export async function updateSubSection(formData, token) {
+  const result = await apiConnector(
+    "POST",
+    endpoints.SUBSECTION_UPDATE_API,
+    formData,
+    { Authorization: `Bearer ${token}` }
+  );
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+  return result.data.data;
+}
+
+export async function deleteSubSection(subSectionId, sectionId, token) {
+  const result = await apiConnector(
+    "POST",
+    endpoints.SUBSECTION_DELETE_API,
+    { subSectionId, sectionId },
+    { Authorization: `Bearer ${token}` }
+  );
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+  return result.data.data;
+}

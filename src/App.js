@@ -12,6 +12,9 @@ import OpenRoute from "./components/core/auth/OpenRoute";
 import PrivateRoute from "./components/core/auth/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import DashboardPlaceholder from "./pages/DashboardPlaceholder";
+import MyCourses from "./pages/MyCourses";
+import AddCourse from "./pages/AddCourse";
+import EditCourse from "./pages/EditCourse";
 
 function App() {
   return (
@@ -86,11 +89,15 @@ function App() {
           />
           <Route
             path="my-courses"
-            element={<DashboardPlaceholder title="My Courses" />}
+            element={<MyCourses />}
           />
           <Route
             path="add-course"
-            element={<DashboardPlaceholder title="Add Course" />}
+            element={<AddCourse />}
+          />
+          <Route
+            path="edit-course/:courseId"
+            element={<EditCourse />}
           />
           <Route
             path="enrolled-courses"
