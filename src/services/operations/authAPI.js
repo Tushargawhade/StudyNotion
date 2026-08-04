@@ -69,13 +69,14 @@ export function signUp(
   };
 }
 
-export function login(email, password, navigate) {
+export function login(email, password, accountType, navigate) {
   return async (dispatch) => {
     dispatch(setLoading(true));
     try {
       const response = await apiConnector("POST", LOGIN_API, {
         email,
         password,
+        accountType,
       });
 
       if (!response.data.success) {
@@ -99,6 +100,7 @@ export function login(email, password, navigate) {
 export function logout(navigate) {
   return (dispatch) => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     dispatch(setToken(null));
     dispatch(setUser(null));
     toast.success("Logged Out");

@@ -34,7 +34,7 @@ function ForgotPassword() {
           <form onSubmit={handleOnSubmit} className="mt-6 w-full">
             <label className="w-full">
               <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-                Email Address <sup className="text-pink-200">*</sup>
+                Email Address <sup className="text-pink-500">*</sup>
               </p>
               <input
                 required
@@ -81,3 +81,4 @@ function ForgotPassword() {
 }
 
 export default ForgotPassword;
+

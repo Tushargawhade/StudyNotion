@@ -6,7 +6,7 @@ const { FULL_COURSE_DETAILS_API, UPDATE_COURSE_PROGRESS_API } = endpoints;
 
 export async function getFullCourseDetails(courseId, token) {
   const result = await apiConnector(
-    "GET",
+    "POST",
     FULL_COURSE_DETAILS_API,
     { courseId },
     { Authorization: `Bearer ${token}` }
@@ -17,11 +17,16 @@ export async function getFullCourseDetails(courseId, token) {
   return result.data.data;
 }
 
-export async function updateCourseProgress(token, courseId, subsectionId) {
+export async function updateCourseProgress(
+  token,
+  courseId,
+  subsectionId,
+  markIncomplete = false
+) {
   const result = await apiConnector(
     "POST",
     UPDATE_COURSE_PROGRESS_API,
-    { courseId, subsectionId },
+    { courseId, subsectionId, markIncomplete },
     { Authorization: `Bearer ${token}` }
   );
   if (!result.data.success) {

@@ -57,7 +57,7 @@ function UpdatePassword() {
         <form onSubmit={handleOnSubmit} className="mt-6 w-full space-y-4">
           <label className="relative block">
             <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-              New Password <sup className="text-pink-200">*</sup>
+              New Password <sup className="text-pink-500">*</sup>
             </p>
             <input
               required
@@ -84,7 +84,7 @@ function UpdatePassword() {
           </label>
           <label className="relative block">
             <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-              Confirm New Password <sup className="text-pink-200">*</sup>
+              Confirm New Password <sup className="text-pink-500">*</sup>
             </p>
             <input
               required
@@ -131,3 +131,4 @@ function UpdatePassword() {
 }
 
 export default UpdatePassword;
+

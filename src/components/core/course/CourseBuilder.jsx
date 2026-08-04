@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
+import { FiCheck } from "react-icons/fi";
 import { resetCourseState, setStep } from "../../../slices/courseSlice";
 import CourseInformationForm from "./CourseInformationForm";
 import CourseBuilderForm from "./CourseBuilderForm";
@@ -32,14 +33,14 @@ function CourseBuilder() {
       <div className="flex items-center justify-between">
         <button
           onClick={handleBack}
-          className="flex items-center gap-2 text-sm font-semibold text-richblack-200 hover:text-richblack-5"
+          className="flex items-center gap-2 text-sm font-semibold text-richblack-100 hover:text-richblack-5"
         >
           <IoIosArrowBack className="text-lg" />
           Back
         </button>
         <button
           onClick={handleCancel}
-          className="text-sm font-semibold text-richblack-200 hover:text-pink-200"
+          className="text-sm font-semibold text-richblack-200 hover:text-pink-500"
         >
           Cancel
         </button>
@@ -57,13 +58,13 @@ function CourseBuilder() {
                 }`}
               >
                 <span
-                  className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold ${
+                  className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold leading-none ${
                     step >= n
                       ? "bg-yellow-50 text-richblack-900"
                       : "bg-richblack-700 text-richblack-300"
                   }`}
                 >
-                  {n < step ? "✓" : n}
+                  {n < step ? <FiCheck /> : n}
                 </span>
                 <span
                   className={`hidden text-sm sm:block ${
@@ -93,3 +94,4 @@ function CourseBuilder() {
 }
 
 export default CourseBuilder;
+

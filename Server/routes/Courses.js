@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 
 // Course Controllers Import
-const { createCourse, editCourse, deleteCourse, getInstructorCourses, getFullCourseDetails, getAllCourses, getCourseDetails } = require("../controllers/Course")
+const { createCourse, editCourse, deleteCourse, getInstructorCourses, getFullCourseDetails, getAllCourses, getCourseDetails, searchCourses } = require("../controllers/Course")
 
 const { updateCourseProgress } = require("../controllers/courseProgress")
 
@@ -15,13 +15,13 @@ const { showAllCategory, createCategory, categoryPageDetails } = require("../con
 const { createSection, updateSection, deleteSection } = require("../controllers/Section")
 
 // Sub-Sections Controllers Import
-const { createSubsection, updateSubSection, deleteSubSection } = require("../controllers/Subsection")
+const { createSubsection, updateSubSection, deleteSubSection, getVideoUploadSignature } = require("../controllers/Subsection")
 
 // Rating Controllers Import
-const { createRating, getAverageRating, getAllRating } = require("../controllers/RatingAndReview")
+const { createRating, getAverageRating, getAllRating, updateReview, deleteReview } = require("../controllers/RatingAndReview")
 
 // Importing Middlewares
-const { auth, isInstructor, isStudent, isAdmin } = require("../middlewares/auth")
+const { auth, isInstructor, isStudent, isAdmin, authOptional } = require("../middlewares/auth")
 
 // Courses can Only be Created by Instructors
 router.post("/createCourse", auth, isInstructor, createCourse)
@@ -35,8 +35,8 @@ router.post("/deleteCourse", auth, isInstructor, deleteCourse)
 // Instructor Courses
 router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses)
 
-// Get All courses Details (for enrolled students, includes video urls)
-router.get("/getFullCourseDetails", auth, getFullCourseDetails)
+// Get Full Course Details (for enrolled students, includes video urls)
+router.post("/getFullCourseDetails", auth, getFullCourseDetails)
 
 // Add a Section to a Course
 router.post("/addSection", auth, isInstructor, createSection)
@@ -56,11 +56,17 @@ router.post("/deleteSubSection", auth, isInstructor, deleteSubSection)
 // Add a Sub Section to a Section
 router.post("/addSubSection", auth, isInstructor, createSubsection)
 
+// Get signed params for direct browser -> Cloudinary video upload
+router.get("/videoUploadSignature", auth, isInstructor, getVideoUploadSignature)
+
 // Get all Registered Courses
 router.get("/getAllCourses", getAllCourses)
 
+// Search Courses
+router.get("/searchCourses", searchCourses)
+
 // Get Details for a Specific Course
-router.post("/getCourseDetails", getCourseDetails)
+router.post("/getCourseDetails", authOptional, getCourseDetails)
 
 // Update Course Progress
 router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress)
@@ -77,6 +83,10 @@ router.get("/showAllCategories", showAllCategory)
 router.post("/getCategoryPageDetails", categoryPageDetails)
 
 router.post("/createRating", auth, isStudent, createRating)
+
+router.put("/updateReview", auth, isStudent, updateReview)
+
+router.delete("/deleteReview", auth, isStudent, deleteReview)
 
 router.get("/getAverageRating", getAverageRating)
 

@@ -3,6 +3,26 @@ const User  = require('../models/User');
 require('dotenv').config();
 
 
+// optional auth - verifies token if present, otherwise continues as anonymous
+exports.authOptional = async (req, res, next) => {
+  try {
+    const authHeader = req.header("Authorization");
+    const token = req.cookies.token
+      || (req.body && req.body.token)
+      || (authHeader && authHeader.replace("Bearer ", ""));
+
+    if (!token) {
+      return next();
+    }
+
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decode;
+    next();
+  } catch (error) {
+    next();
+  }
+}
+
 // auth 
 exports.auth = async(req,res,next)=>{
     try{
@@ -22,7 +42,6 @@ exports.auth = async(req,res,next)=>{
         // Verify token 
         try{
             const decode =  jwt.verify(token, process.env.JWT_SECRET);
-            console.log(decode);
             req.user = decode;
         }
         catch(err){

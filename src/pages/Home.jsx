@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaArrowRight } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import HighlightedText from '../components/core/homepage/HighlightedText';
@@ -9,20 +9,41 @@ import TimeLineSection from '../components/core/homepage/TimeLineSection';
 import LearningLanguageSection from '../components/core/homepage/LearningLanguageSection';
 import InstructorSection from '../components/core/homepage/InstructorSection';
 import ExploreMore from '../components/core/homepage/ExploreMore'
-import Footer from '../components/common/Footer';
+import ReviewSlider from '../components/common/ReviewSlider';
+import CourseCard from '../components/core/course/CourseCard';
+import { fetchAllCourses } from '../services/operations/courseDetailsAPI';
 
 const Home = () => {
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await fetchAllCourses();
+        setCourses(data || []);
+      } catch (error) {
+        setCourses([]);
+      }
+    })();
+  }, []);
+
+  const latestCourses = courses.slice(0, 8);
+  const totalStudents = courses.reduce(
+    (acc, course) => acc + (course.studentsEnrolled?.length || 0),
+    0
+  );
+
   return (
     <div>
 
         {/* section 1 */}
-        <div className='relative mx-auto max-w-maxContent flex flex-col w-11/12 items-center text-white  '>
+        <div className='relative mx-auto max-w-maxContent flex flex-col w-11/12 items-center text-richblack-25  '>
 
             {/* starting part  */}
 
             <Link to={"/signup"}>
 
-                <div className='group mx-auto bg-richblack-800 p-1 mt-16 rounded-full font-semibold transition-all duration-200 hover:scale-90 w-fit '>
+                <div className='group mx-auto bg-richblack-800 p-1 mt-16 rounded-full font-semibold transition-all duration-200 hover:scale-105 w-fit '>
                     <div className='flex items-center gap-2  px-5 py-[5px] rounded-full transition-all duration-200 group-hover:bg-richblack-900 '>
                         <p>Become an Instructor</p>
                         <FaArrowRight />
@@ -45,19 +66,19 @@ const Home = () => {
             <div className='flex flex-row gap-10 mt-5'>
 
                 <CTAButton active={true} linkto="/signup">
-                    learn more 
+                    Start Learning Free
                 </CTAButton>
 
-                <CTAButton active={false} linkto="/login">
-                    Book a Demo
+                <CTAButton active={false} linkto="/catalog">
+                    Explore Courses
                 </CTAButton>
 
                  
             </div>
 
-            <div className='mx-3 my-12 shadow-blue-200'>
+            <div className='mx-3 my-10 w-full max-w-[800px] rounded-2xl border border-richblack-700 bg-richblack-800 p-2 shadow-lg shadow-[#DBEAFE]'>
 
-                <video muted loop autoPlay>
+                <video muted loop autoPlay className="w-full rounded-xl">
                     <source src={Banner} type="video/mp4" />
                 </video>
 
@@ -68,7 +89,7 @@ const Home = () => {
 
             {/* first coding part  */}
 
-            <div className='flex flex-col gap-4'>
+            <div className='flex flex-col gap-3'>
 
                 <CodeBlocks
                     position={"flex-row"} 
@@ -137,7 +158,7 @@ const Home = () => {
             </div>
             
 
-            <ExploreMore />
+            <ExploreMore courses={courses} />
  
 
 
@@ -147,18 +168,18 @@ const Home = () => {
 
         {/* section 2 */}
 
-        <div className=' bg-pure-greys-5 text-richblack-700 '>
+        <div className=' bg-blue-5 text-richblack-25 '>
 
-            <div className='homepage_bg h-[310px]'>
+            {/* <div className='homepage_bg h-[310px]'>
 
                    <div className='w-11/12 max-w-maxContent flex flex-col items-center justify-center gap-5 mx-auto'>
                         <div className='h-[180px]'>
 
                         </div>
 
-                        <div className='flex  mt-6 gap-8 text-white'>
+                        <div className='flex  mt-6 gap-8 text-richblack-25'>
 
-                            <CTAButton active={true} linkto={"/signup"}  >
+                            <CTAButton active={true} linkto={"/catalog"}  >
                                 <div className='flex gap-3 items-center'>
                                     Explore Full Catalog
                                     <FaArrowRight/>
@@ -173,19 +194,19 @@ const Home = () => {
 
                    </div>
 
-            </div>
+            </div> */}
 
-            <div className='w-11/12 max-w-maxContent flex flex-col items-center justify-center gap-7 mx-auto mb-10 mt-10'>
+            <div className='w-11/12 max-w-maxContent flex flex-col items-center justify-center gap-7 mx-auto mb-10 mt-5'>
                 
-                <div className='flex gap-16 '>
+                <div className='flex flex-col gap-10 lg:flex-row lg:gap-16 mt-10'>
 
-                    <div className='text-4xl font-semibold w-[45%]'>
+                    <div className='text-4xl font-semibold w-full lg:w-[45%]'>
                         Get the skills you need for a
                         <HighlightedText text={"job that is in demand"}/>
                     </div>
 
-                    <div className='flex flex-col gap-10 w-[40%] items-start'>
-                        <p className='font-semibold text-richblack-600'>The modern StudyNotion is the dictates its own terms. Today, to be a competitive specialist requires more than professional skills.</p>
+                    <div className='flex flex-col gap-10 w-full lg:w-[40%] items-start'>
+                        <p className='font-semibold text-richblack-600'>StudyVerse lets you learn on your own terms. Today, to be a competitive specialist requires more than professional skills.</p>
 
                         <CTAButton active={true} linkto={"/signup"}>
                             Learn More
@@ -195,7 +216,10 @@ const Home = () => {
 
                 </div>
 
-                <TimeLineSection/>
+                <TimeLineSection
+                  coursesCount={courses.length}
+                  studentsCount={totalStudents}
+                />
 
                 <LearningLanguageSection/>
 
@@ -212,25 +236,48 @@ const Home = () => {
 
         {/* section 3 */}
 
-        <div className='w-11/12 mx-auto max-w-maxContent flex flex-col justify-center gap-8 bg-richblack-900 text-white items-center '>
+        <div className='w-11/12 mx-auto  max-w-maxContent flex flex-col justify-center gap-8 bg-richblack-900 text-richblack-25 items-center '>
             
             <InstructorSection/>
 
-            <h2 className='text-center text-4xl font-semibold '>Review from others learner</h2>
+            {latestCourses.length > 0 && (
+              <div className="flex w-full flex-col items-center gap-8 m-4">
+                <h2 className='text-center text-4xl font-semibold '>
+                  Latest <span className='text-yellow-50'>Courses</span>
+                </h2>
+                <div className='grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+                  {latestCourses.map((course) => (
+                    <CourseCard key={course._id} course={course} />
+                  ))}
+                </div>
 
+                <Link
+                  to="/catalog"
+                  className="flex items-center gap-2 mt-6 rounded-md border border-yellow-50 px-5 py-2.5 font-semibold text-yellow-50 transition-all hover:bg-yellow-50 hover:text-richblack-900"
+                >
+                  View Full Catalog <FaArrowRight />
+                </Link>
+              </div>
+            )}
 
-
-
+            <div className="flex w-full flex-col items-center gap-3 pb-12">
+              <h2 className='text-center text-4xl font-semibold '>
+                Reviews from our <span className='text-yellow-50'>Learners</span>
+              </h2>
+              <p className='max-w-xl text-center text-sm leading-6 text-richblack-200'>
+                Hear what our students have to say about the courses they love.
+              </p>
+            </div>
 
         </div>
 
+        {/* section 3 reviews (full width) */}
 
+        <div className='bg-richblack-900 pb-20'>
 
-        {/* footer */}
-        
-        <Footer/>
+            <ReviewSlider />
 
-
+        </div>
 
     </div>
   )

@@ -1,32 +1,58 @@
 const Profile = require('../models/Profile');
 const User = require('../models/User');
 const Course = require('../models/Course');
+const CourseProgress = require('../models/CourseProgress');
+const Purchase = require('../models/Purchase');
 const { uploadImageToCloudinary } = require('../utils/imageUploader');
 require('dotenv').config();
 
 // update profile handler function
 exports.updateProfile = async (req, res) => {
   try {
-    const { dateOfBirth = "", gender, about = "", contactNumber } = req.body;
+    const {
+      firstName,
+      lastName,
+      dateOfBirth,
+      gender,
+      about,
+      contactNumber,
+    } = req.body;
 
     const userId = req.user.id;
 
-    if (!gender || !contactNumber || !userId) {
+    if (!userId) {
       return res.status(400).json({
         success: false,
-        message: "All fields are required",
+        message: "User not found",
       });
     }
 
     const userDetails = await User.findById(userId);
-    const profileId = userDetails.additionalDetails;
-    const profileDetails = await Profile.findById(profileId);
 
-    profileDetails.dateOfBirth = dateOfBirth;
-    profileDetails.gender = gender;
-    profileDetails.about = about;
-    profileDetails.contactNumber = contactNumber;
+    if (!userDetails) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const profileDetails = await Profile.findById(userDetails.additionalDetails);
+
+    if (dateOfBirth !== undefined) profileDetails.dateOfBirth = dateOfBirth;
+    if (gender !== undefined) profileDetails.gender = gender;
+    if (about !== undefined) profileDetails.about = about;
+    if (contactNumber !== undefined) {
+      const normalized = normalizeContactNumber(contactNumber);
+      profileDetails.contactNumber = normalized;
+    }
     await profileDetails.save();
+
+    if (firstName !== undefined) userDetails.firstName = firstName;
+    if (lastName !== undefined) userDetails.lastName = lastName;
+    if (contactNumber !== undefined) {
+      userDetails.contactNumber = normalizeContactNumber(contactNumber);
+    }
+    await userDetails.save();
 
     return res.status(200).json({
       success: true,
@@ -40,6 +66,14 @@ exports.updateProfile = async (req, res) => {
     });
   }
 };
+
+function normalizeContactNumber(value) {
+  if (value === "" || value === null || value === undefined) {
+    return null;
+  }
+  const num = Number(value);
+  return Number.isNaN(num) ? null : num;
+}
 
 // update display picture handler function
 exports.updateDisplayPicture = async (req, res) => {
@@ -74,7 +108,22 @@ exports.getEnrolledCourses = async (req, res) => {
     const userId = req.user.id;
 
     let userDetails = await User.findOne({ _id: userId })
-      .populate("courses")
+      .populate({
+        path: "courses",
+        populate: [
+          {
+            path: "instructor",
+            select: "firstName lastName image additionalDetails",
+            populate: { path: "additionalDetails" },
+          },
+          { path: "category", select: "name" },
+          { path: "ratingAndReviews" },
+          {
+            path: "courseContent",
+            populate: { path: "subSection", select: "title timeDuration" },
+          },
+        ],
+      })
       .exec();
 
     if (!userDetails) {
@@ -84,15 +133,109 @@ exports.getEnrolledCourses = async (req, res) => {
       });
     }
 
+    const courseIds = userDetails.courses.map((course) => course._id);
+
+    const progressRecords = await CourseProgress.find({
+      userId: userId,
+      courseID: { $in: courseIds },
+    });
+
+    const progressMap = {};
+    progressRecords.forEach((record) => {
+      progressMap[String(record.courseID)] = record.completedVideos || [];
+    });
+
+    const courses = userDetails.courses.map((course) => {
+      const totalVideos = course.courseContent.reduce(
+        (acc, section) => acc + (section.subSection?.length || 0),
+        0
+      );
+      const completedVideos = progressMap[String(course._id)] || [];
+      const percent =
+        totalVideos > 0
+          ? Math.round((completedVideos.length / totalVideos) * 100)
+          : 0;
+      let status = "Not Started";
+      if (completedVideos.length > 0 && percent < 100) {
+        status = "In Progress";
+      } else if (percent >= 100) {
+        status = "Completed";
+      }
+
+      const plainCourse = course.toObject();
+      plainCourse.progress = {
+        completedVideos: completedVideos.length,
+        totalVideos,
+        percent,
+        status,
+      };
+      return plainCourse;
+    });
+
     return res.status(200).json({
       success: true,
       message: "Courses fetched successfully",
-      data: userDetails.courses,
+      data: courses,
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
       message: "Error in fetching enrolled courses",
+      error: error.message,
+    });
+  }
+};
+
+// purchase history handler function
+exports.getPurchaseHistory = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    let userDetails = await User.findById(userId).populate("courses").exec();
+
+    if (!userDetails) {
+      return res.status(404).json({
+        success: false,
+        message: "Could not find user with an id",
+      });
+    }
+
+    // Backfill Purchase records for enrollments made before purchases were tracked
+    for (const course of userDetails.courses) {
+      const exists = await Purchase.findOne({ user: userId, course: course._id });
+      if (!exists) {
+        await Purchase.create({
+          user: userId,
+          course: course._id,
+          price: course.price || 0,
+        });
+      }
+    }
+
+    const purchases = await Purchase.find({ user: userId })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "course",
+        select: "courseName thumbnail price status studentsEnrolled",
+        populate: [
+          {
+            path: "instructor",
+            select: "firstName lastName image",
+          },
+          { path: "category", select: "name" },
+        ],
+      })
+      .exec();
+
+    return res.status(200).json({
+      success: true,
+      message: "Purchase history fetched successfully",
+      data: purchases,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error in fetching purchase history",
       error: error.message,
     });
   }

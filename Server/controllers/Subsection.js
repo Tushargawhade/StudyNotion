@@ -1,31 +1,64 @@
 const SubSection = require('../models/SubSection');
 const Section = require('../models/Section');
-const { uploadImageToCloudinary } = require('../utils/imageUploader');
+const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 
 const FOLDER_NAME = process.env.FOLDER_NAME;
 
+// generate a signed upload payload for direct browser -> Cloudinary video upload
+exports.getVideoUploadSignature = async (req, res) => {
+  try {
+    const timestamp = Math.round(Date.now() / 1000);
+    const publicId = `video_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+
+    const paramsToSign = {
+      timestamp,
+      folder: FOLDER_NAME,
+      public_id: publicId,
+    };
+
+    const signature = cloudinary.utils.api_sign_request(
+      paramsToSign,
+      process.env.API_SECRET
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        cloudName: process.env.CLOUD_NAME,
+        apiKey: process.env.API_KEY,
+        timestamp,
+        folder: FOLDER_NAME,
+        publicId,
+        signature,
+        resourceType: 'video',
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 // create Subsection handler function
 exports.createSubsection = async (req, res) => {
   try {
-    const { sectionId, title, description } = req.body;
+    const { sectionId, title, description, videoUrl, timeDuration } = req.body;
 
-    const video = req.files.video;
-
-    if (!sectionId || !title || !description || !video) {
+    if (!sectionId || !title || !description || !videoUrl) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",
       });
     }
 
-    const uploadDetails = await uploadImageToCloudinary(video, FOLDER_NAME);
-
     const subSectionDetails = await SubSection.create({
       title: title,
-      timeDuration: `${uploadDetails.duration}`,
+      timeDuration: timeDuration || "",
       description: description,
-      videoUrl: uploadDetails.secure_url,
+      videoUrl: videoUrl,
     });
 
     const updatedSection = await Section.findByIdAndUpdate(
@@ -51,7 +84,7 @@ exports.createSubsection = async (req, res) => {
 // Handler function for updatedSubsection
 exports.updateSubSection = async (req, res) => {
   try {
-    const { subSectionId, sectionId, title, description } = req.body;
+    const { subSectionId, sectionId, title, description, videoUrl, timeDuration } = req.body;
 
     const subSection = await SubSection.findById(subSectionId);
     if (!subSection) {
@@ -63,12 +96,9 @@ exports.updateSubSection = async (req, res) => {
 
     if (title !== undefined) subSection.title = title;
     if (description !== undefined) subSection.description = description;
-
-    if (req.files && req.files.video) {
-      const video = req.files.video;
-      const uploadDetails = await uploadImageToCloudinary(video, FOLDER_NAME);
-      subSection.videoUrl = uploadDetails.secure_url;
-      subSection.timeDuration = `${uploadDetails.duration}`;
+    if (videoUrl) {
+      subSection.videoUrl = videoUrl;
+      if (timeDuration !== undefined) subSection.timeDuration = timeDuration;
     }
 
     await subSection.save();

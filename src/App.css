@@ -11,3 +11,57 @@ body {
     background: url("../src/assets/Images/bghome.svg");
 
 }
+
+/* Thin custom scrollbar for horizontal catalog rows */
+.catalog-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.catalog-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.catalog-scroll::-webkit-scrollbar-thumb {
+    background: #3d3d3d;
+    border-radius: 9999px;
+}
+
+.catalog-scroll::-webkit-scrollbar-thumb:hover {
+    background: #5a5a5a;
+}
+
+/* Dropdown open animation */
+.dropdown-pop {
+    animation: dropdown-pop 0.15s ease-out;
+}
+
+@keyframes dropdown-pop {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Seamless right-to-left marquee for reviews */
+.animate-marquee {
+    animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+        animation: none;
+    }
+}

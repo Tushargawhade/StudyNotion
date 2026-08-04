@@ -11,6 +11,9 @@ import {
   VscAdd,
   VscMortarBoard,
   VscHistory,
+  VscHeart,
+  VscChecklist,
+  VscSettingsGear,
 } from "react-icons/vsc";
 import ConfirmationModal from "../../common/ConfirmationModal";
 
@@ -21,6 +24,8 @@ const iconComponents = {
   VscAdd,
   VscMortarBoard,
   VscHistory,
+  VscHeart,
+  VscChecklist,
 };
 
 function Sidebar() {
@@ -50,7 +55,7 @@ function Sidebar() {
               <div
                 className={`relative px-8 py-2 text-sm font-medium ${
                   matchRoute(link.path)
-                    ? "bg-yellow-800 text-yellow-50"
+                    ? "bg-blue-5 text-yellow-50"
                     : "text-richblack-300"
                 } transition-all duration-200`}
               >
@@ -79,6 +84,18 @@ function Sidebar() {
           </span>
         </div>
 
+        <Link
+          to="/dashboard/settings"
+          className={`flex items-center gap-x-2 px-8 py-2 text-sm font-medium transition-all ${
+            matchRoute("/dashboard/settings")
+              ? "bg-blue-5 text-yellow-50"
+              : "text-richblack-300 hover:bg-blue-5"
+          }`}
+        >
+          <VscSettingsGear className="text-lg" />
+          <span>Settings</span>
+        </Link>
+
         <button
           onClick={() =>
             setConfirmationModal({
@@ -90,7 +107,7 @@ function Sidebar() {
               btn2Handler: () => setConfirmationModal(null),
             })
           }
-          className="flex items-center gap-x-2 px-8 py-2 text-sm font-medium text-pink-200 hover:bg-richblack-700 hover:bg-opacity-50"
+          className="flex items-center gap-x-2 px-8 py-2 text-sm font-medium text-pink-500 hover:bg-blue-5"
         >
           <VscSignOut className="text-lg" />
           <span>Logout</span>
@@ -98,7 +115,7 @@ function Sidebar() {
 
         <button
           onClick={() => navigate("/")}
-          className="mt-4 flex items-center gap-x-2 px-8 py-2 text-sm font-medium text-richblack-300 hover:bg-richblack-700 hover:bg-opacity-50"
+          className="mt-4 flex items-center gap-x-2 px-8 py-2 text-sm font-medium text-richblack-300 hover:bg-blue-5"
         >
           <VscDashboard className="rotate-180 text-lg" />
           <span>Back to Home</span>
@@ -111,3 +128,4 @@ function Sidebar() {
 }
 
 export default Sidebar;
+

@@ -75,7 +75,7 @@ function CoursePublishForm() {
               <p className="text-sm text-richblack-200">
                 {course?.courseDescription}
               </p>
-              <p className="text-sm text-yellow-50">Rs. {course?.price}</p>
+              <p className="text-sm text-yellow-50">₹{course?.price}</p>
               <p className="text-xs text-richblack-300">
                 Category: {categoryName}
               </p>
@@ -114,7 +114,7 @@ function CoursePublishForm() {
           onclick={() => handlePublish("Draft")}
           disabled={loading}
           outline
-          customClasses="border-richblack-200 text-richblack-200 hover:border-richblack-100"
+          customClasses="border-richblack-400 text-richblack-100 hover:border-yellow-50 hover:text-yellow-50"
         />
         <IconBtn
           onclick={() => handlePublish("Published")}

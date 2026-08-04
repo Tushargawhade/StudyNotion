@@ -63,6 +63,87 @@ exports.createRating = async (req, res) => {
   }
 };
 
+// update review handler function
+exports.updateReview = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { reviewId, rating, review } = req.body;
+
+    const existingReview = await RatingAndReview.findById(reviewId);
+
+    if (!existingReview) {
+      return res.status(404).json({
+        success: false,
+        message: "Review not found",
+      });
+    }
+
+    if (String(existingReview.user) !== String(userId)) {
+      return res.status(403).json({
+        success: false,
+        message: "You can only update your own review",
+      });
+    }
+
+    if (rating !== undefined) existingReview.rating = rating;
+    if (review !== undefined) existingReview.review = review;
+    await existingReview.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Review updated successfully",
+      data: existingReview,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// delete review handler function
+exports.deleteReview = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { reviewId } = req.body;
+
+    const existingReview = await RatingAndReview.findById(reviewId);
+
+    if (!existingReview) {
+      return res.status(404).json({
+        success: false,
+        message: "Review not found",
+      });
+    }
+
+    if (String(existingReview.user) !== String(userId)) {
+      return res.status(403).json({
+        success: false,
+        message: "You can only delete your own review",
+      });
+    }
+
+    await RatingAndReview.findByIdAndDelete(reviewId);
+
+    await Course.findByIdAndUpdate(
+      existingReview.course,
+      { $pull: { ratingAndReviews: reviewId } },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Review deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 // getAverageRating
 exports.getAverageRating = async (req, res) => {
   try {

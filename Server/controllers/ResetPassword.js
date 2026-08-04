@@ -3,6 +3,8 @@ const mailSender = require('../utils/mailSender')
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3000";
+
 
 // resetpasswordToken 
 
@@ -33,7 +35,7 @@ exports.resetPasswordToken  = async (req, res)=>{
 
 
     // create url 
-    const url =  `http://localhost:3000/update-password?token=${token}`
+    const url =  `${CLIENT_URL}/update-password?token=${token}`
 
 
     // send mail containg url

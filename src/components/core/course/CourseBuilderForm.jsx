@@ -254,7 +254,7 @@ function CourseBuilderForm() {
                         btn2Handler: () => setConfirmationModal(null),
                       })
                     }
-                    className="text-lg text-richblack-200 hover:text-pink-200"
+                    className="text-lg text-richblack-200 hover:text-pink-500"
                   >
                     <FiTrash2 />
                   </button>
@@ -329,7 +329,7 @@ function CourseBuilderForm() {
                                   btn2Handler: () => setConfirmationModal(null),
                                 })
                               }
-                              className="text-lg text-richblack-200 hover:text-pink-200"
+                              className="text-lg text-richblack-200 hover:text-pink-500"
                             >
                               <FiTrash2 />
                             </button>
@@ -377,3 +377,4 @@ function CourseBuilderForm() {
 }
 
 export default CourseBuilderForm;
+

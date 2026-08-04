@@ -1,6 +1,9 @@
 const Course = require('../models/Course');
 const User = require('../models/User');
 const CourseProgress = require('../models/CourseProgress');
+const Purchase = require('../models/Purchase');
+const mailSender = require('../utils/mailSender');
+const { courseEnrollmentEmail } = require('../mail/courseEnrollmentEmail');
 
 // Demo enrollment (no payment) — lets a student enroll in a published course
 exports.demoEnroll = async (req, res) => {
@@ -55,6 +58,25 @@ exports.demoEnroll = async (req, res) => {
       userId: userId,
       completedVideos: [],
     });
+
+    await Purchase.findOneAndUpdate(
+      { user: userId, course: courseId },
+      { user: userId, course: courseId, price: courseDetails.price },
+      { upsert: true, new: true }
+    );
+
+    try {
+      const user = await User.findById(userId);
+      if (user) {
+        await mailSender(
+          user.email,
+          "Enrolled in " + courseDetails.courseName,
+          courseEnrollmentEmail(courseDetails.courseName, user.firstName)
+        );
+      }
+    } catch (error) {
+      console.error("Enrollment email failed:", error.message);
+    }
 
     return res.status(200).json({
       success: true,

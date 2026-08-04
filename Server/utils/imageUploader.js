@@ -18,11 +18,8 @@ exports.uploadImageToCloudinary = async(file, folder, height, quality)=>{
 
    }
    catch(error){
-    return res.status(500).json({
-      success:false,
-      message:"Error while uploading image, please try again"
-    })
-
+    console.error("Error while uploading image to Cloudinary:", error.message);
+    throw new Error("Error while uploading image, please try again");
    }
     
 }

@@ -104,8 +104,10 @@ exports.getAllCourses = async (req, res) => {
       instructor: true,
       ratingAndReviews: true,
       studentsEnrolled: true,
+      category: true,
     })
       .populate("instructor")
+      .populate("category")
       .exec();
 
     return res.status(200).json({
@@ -132,7 +134,10 @@ exports.getCourseDetails = async (req, res) => {
         populate: { path: "additionalDetails" },
       })
       .populate("category")
-      .populate("ratingAndReviews")
+      .populate({
+        path: "ratingAndReviews",
+        populate: { path: "user", select: "firstName lastName image" },
+      })
       .populate({
         path: "courseContent",
         populate: {
@@ -147,6 +152,17 @@ exports.getCourseDetails = async (req, res) => {
         success: false,
         message: "Course details not found for the given course ID",
       });
+    }
+
+    if (courseDetails.status !== "Published") {
+      const isInstructor =
+        req.user && String(req.user.id) === String(courseDetails.instructor._id);
+      if (!isInstructor) {
+        return res.status(404).json({
+          success: false,
+          message: "Course details not found for the given course ID",
+        });
+      }
     }
 
     let totalDurationInSeconds = 0;
@@ -196,6 +212,18 @@ exports.getFullCourseDetails = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Course details not found for the given course ID",
+      });
+    }
+
+    const isEnrolled = courseDetails.studentsEnrolled.some(
+      (id) => String(id) === String(userId)
+    );
+    const isInstructorCourse =
+      String(courseDetails.instructor._id) === String(userId);
+    if (!isEnrolled && !isInstructorCourse) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not enrolled in this course",
       });
     }
 
@@ -331,12 +359,65 @@ exports.deleteCourse = async (req, res) => {
   }
 };
 
+// Search published courses by keyword
+exports.searchCourses = async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    if (!q || !q.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Search query is required",
+      });
+    }
+
+    const query = q.trim();
+    const regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+
+    const allCourses = await Course.find({ status: "Published" })
+      .populate("instructor")
+      .populate("category");
+
+    const matchedCourses = allCourses.filter((course) => {
+      const fields = [
+        course.courseName,
+        course.courseDescription,
+        course.category?.name,
+        course.instructor?.firstName,
+        course.instructor?.lastName,
+      ];
+      const text = [...fields, ...(course.tag || [])]
+        .filter(Boolean)
+        .join(" ");
+      return regex.test(text);
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Search results fetched successfully",
+      data: matchedCourses,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error in searching courses",
+      error: error.message,
+    });
+  }
+};
+
 // Get all courses of an instructor
 exports.getInstructorCourses = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const allCourses = await Course.find({ instructor: userId }).sort({ createdAt: -1 });
+    const allCourses = await Course.find({ instructor: userId })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "courseContent",
+        populate: { path: "subSection" },
+      })
+      .populate("category");
 
     return res.status(200).json({
       success: true,

@@ -4,11 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { HiOutlineArrowLeft } from "react-icons/hi";
 
-import { signUp } from "../../../services/operations/authAPI";
+import { signUp, sendOtp } from "../../../services/operations/authAPI";
 
 function OtpForm() {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
+  const [resending, setResending] = useState(false);
   const inputRef = useRef(null);
 
   const navigate = useNavigate();
@@ -88,6 +89,12 @@ function OtpForm() {
     );
   };
 
+  const handleResend = async () => {
+    setResending(true);
+    await dispatch(sendOtp(signupData.email, navigate));
+    setResending(false);
+  };
+
   if (!signupData) return null;
 
   return (
@@ -123,6 +130,15 @@ function OtpForm() {
           className="mt-8 w-full rounded-[8px] bg-yellow-50 py-[12px] font-medium text-richblack-900 transition-all duration-200 hover:bg-yellow-25 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? "Verifying..." : "Verify Email"}
+        </button>
+
+        <button
+          type="button"
+          onClick={handleResend}
+          disabled={resending || loading}
+          className="mt-3 w-full rounded-[8px] border border-richblack-600 py-[12px] font-medium text-richblack-25 transition-all duration-200 hover:bg-richblack-800 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {resending ? "Resending..." : "Resend OTP"}
         </button>
       </form>
 

@@ -7,7 +7,27 @@ const {
   RATING_API,
   REVIEWS_API,
   GET_CATEGORY_DETAILS_API,
+  GET_ALL_COURSE_API,
+  SEARCH_COURSES_API,
 } = endpoints;
+
+export async function searchCourses(query) {
+  const result = await apiConnector("GET", SEARCH_COURSES_API, null, null, {
+    q: query,
+  });
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+  return result.data.data;
+}
+
+export async function fetchAllCourses() {
+  const result = await apiConnector("GET", GET_ALL_COURSE_API);
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+  return result.data.data;
+}
 
 export async function fetchCourseDetails(courseId) {
   const result = await apiConnector("POST", COURSE_DETAILS_API, { courseId });
@@ -55,6 +75,38 @@ export async function addRatingAndReview(
   }
 
   toast.success("Rating and review added successfully");
+}
+
+export async function updateReview(reviewId, rating, review, token) {
+  const result = await apiConnector(
+    "PUT",
+    endpoints.UPDATE_REVIEW_API,
+    { reviewId, rating, review },
+    { Authorization: `Bearer ${token}` }
+  );
+
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+
+  toast.success("Review updated successfully");
+  return result.data.data;
+}
+
+export async function deleteReview(reviewId, token) {
+  const result = await apiConnector(
+    "DELETE",
+    endpoints.DELETE_REVIEW_API,
+    { reviewId },
+    { Authorization: `Bearer ${token}` }
+  );
+
+  if (!result.data.success) {
+    throw new Error(result.data.message);
+  }
+
+  toast.success("Review deleted successfully");
+  return result.data;
 }
 
 export async function createCourse(formData, token) {
@@ -145,11 +197,11 @@ export async function deleteSection(sectionId, courseId, token) {
   return result.data.data;
 }
 
-export async function createSubSection(formData, token) {
+export async function createSubSection(data, token) {
   const result = await apiConnector(
     "POST",
     endpoints.SUBSECTION_CREATE_API,
-    formData,
+    data,
     { Authorization: `Bearer ${token}` }
   );
   if (!result.data.success) {
@@ -158,11 +210,11 @@ export async function createSubSection(formData, token) {
   return result.data.data;
 }
 
-export async function updateSubSection(formData, token) {
+export async function updateSubSection(data, token) {
   const result = await apiConnector(
     "POST",
     endpoints.SUBSECTION_UPDATE_API,
-    formData,
+    data,
     { Authorization: `Bearer ${token}` }
   );
   if (!result.data.success) {

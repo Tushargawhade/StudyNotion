@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 
 import { login } from "../../../services/operations/authAPI"
+import { ACCOUNT_TYPE } from "../../../utils/constants"
 
 function LoginForm() {
   const navigate = useNavigate()
@@ -14,6 +15,7 @@ function LoginForm() {
     password: "",
   })
 
+  const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT)
   const [showPassword, setShowPassword] = useState(false)
 
   const { email, password } = formData
@@ -27,7 +29,7 @@ function LoginForm() {
 
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    dispatch(login(email, password, navigate))
+    dispatch(login(email, password, accountType, navigate))
   }
 
   return (
@@ -35,9 +37,29 @@ function LoginForm() {
       onSubmit={handleOnSubmit}
       className="mt-6 flex w-full flex-col gap-y-4"
     >
+      <div className="flex gap-4">
+        {[
+          ACCOUNT_TYPE.STUDENT,
+          ACCOUNT_TYPE.INSTRUCTOR,
+          ACCOUNT_TYPE.ADMIN,
+        ].map((type) => (
+          <button
+            type="button"
+            key={type}
+            onClick={() => setAccountType(type)}
+            className={`rounded-md px-4 py-2 text-sm font-semibold transition-all ${
+              accountType === type
+                ? "bg-yellow-50 text-richblack-900"
+                : "border border-richblack-700 bg-richblack-800 text-richblack-100 hover:bg-richblack-700"
+            }`}
+          >
+            {type}
+          </button>
+        ))}
+      </div>
       <label className="w-full">
         <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-          Email Address <sup className="text-pink-200">*</sup>
+          Email Address <sup className="text-pink-500">*</sup>
         </p>
         <input
           required
@@ -54,7 +76,7 @@ function LoginForm() {
       </label>
       <label className="relative">
         <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-          Password <sup className="text-pink-200">*</sup>
+          Password <sup className="text-pink-500">*</sup>
         </p>
         <input
           required

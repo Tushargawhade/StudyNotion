@@ -48,7 +48,7 @@ function Contact() {
 
   return (
     <div>
-      <div className="mx-auto flex w-11/12 max-w-maxContent flex-col gap-12 py-14 text-white lg:flex-row">
+      <div className="mx-auto flex w-11/12 max-w-maxContent flex-col gap-12 py-14 text-richblack-25 lg:flex-row">
         {/* left info */}
         <div className="flex flex-col gap-6 lg:w-[40%]">
           <h1 className="text-4xl font-semibold">
@@ -63,7 +63,7 @@ function Contact() {
           <div className="flex flex-col gap-4 text-richblack-100">
             <div className="flex items-center gap-3">
               <FaEnvelope className="text-yellow-50" />
-              <p>support@studynotion.in</p>
+              <p>support@studyverse.in</p>
             </div>
             <div className="flex items-center gap-3">
               <FaPhoneAlt className="text-yellow-50" />
@@ -82,7 +82,7 @@ function Contact() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <label className="w-full">
                 <p className="mb-2 text-[0.875rem]  text-richblack-5">
-                  Name <sup className="text-pink-200">*</sup>
+                  Name <sup className="text-pink-500">*</sup>
                 </p>
                 <input
                   required
@@ -97,7 +97,7 @@ function Contact() {
               </label>
               <label className="w-full">
                 <p className="mb-2 text-[0.875rem]  text-richblack-5">
-                  Email Address <sup className="text-pink-200">*</sup>
+                  Email Address <sup className="text-pink-500">*</sup>
                 </p>
                 <input
                   required
@@ -142,7 +142,7 @@ function Contact() {
 
             <label className="w-full">
               <p className="mb-2 text-[0.875rem]  text-richblack-5">
-                Message <sup className="text-pink-200">*</sup>
+                Message <sup className="text-pink-500">*</sup>
               </p>
               <textarea
                 required
@@ -173,3 +173,4 @@ function Contact() {
 }
 
 export default Contact;
+

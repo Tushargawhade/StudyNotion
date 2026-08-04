@@ -9,6 +9,7 @@ import {
   createSubSection,
   updateSubSection,
 } from "../../../services/operations/courseDetailsAPI";
+import { uploadVideoToCloudinary } from "../../../utils/cloudinaryUpload";
 import { setCourse } from "../../../slices/courseSlice";
 
 function SubSectionModal({ modalData, setModalData }) {
@@ -18,6 +19,7 @@ function SubSectionModal({ modalData, setModalData }) {
 
   const isEdit = modalData?.type === "edit";
   const [loading, setLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(null);
   const [videoFile, setVideoFile] = useState(null);
   const [videoPreview, setVideoPreview] = useState(null);
 
@@ -65,28 +67,47 @@ function SubSectionModal({ modalData, setModalData }) {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("sectionId", modalData.sectionId);
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    if (isEdit) {
-      formData.append("subSectionId", modalData.subSectionId);
-    }
-    if (videoFile) {
-      formData.append("video", videoFile);
-    }
-
     setLoading(true);
+
+    let videoUrl = null;
+    let timeDuration = null;
+
     try {
+      if (videoFile) {
+        const uploaded = await uploadVideoToCloudinary(
+          videoFile,
+          token,
+          setUploadProgress
+        );
+        videoUrl = uploaded.videoUrl;
+        timeDuration = String(uploaded.duration);
+      }
+
+      const payload = {
+        sectionId: modalData.sectionId,
+        title: data.title,
+        description: data.description,
+      };
+      if (isEdit) {
+        payload.subSectionId = modalData.subSectionId;
+      }
+      if (videoUrl) {
+        payload.videoUrl = videoUrl;
+        payload.timeDuration = timeDuration;
+      }
+
       const section = isEdit
-        ? await updateSubSection(formData, token)
-        : await createSubSection(formData, token);
+        ? await updateSubSection(payload, token)
+        : await createSubSection(payload, token);
       updateCourseWithSection(section);
       setModalData(null);
     } catch (error) {
-      toast.error(error.message || "Something went wrong");
+      if (!error.uploadFailed) {
+        toast.error(error.message || "Something went wrong");
+      }
     }
     setLoading(false);
+    setUploadProgress(null);
   };
 
   const inputClass =
@@ -110,7 +131,7 @@ function SubSectionModal({ modalData, setModalData }) {
         <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
           <div className="flex flex-col gap-2">
             <label className="text-[14px] text-richblack-5">
-              Lecture Title <sup className="text-pink-200">*</sup>
+              Lecture Title <sup className="text-pink-500">*</sup>
             </label>
             <input
               placeholder="Enter lecture title"
@@ -118,7 +139,7 @@ function SubSectionModal({ modalData, setModalData }) {
               {...register("title", { required: true })}
             />
             {errors.title && (
-              <span className="text-xs text-pink-200">
+              <span className="text-xs text-pink-500">
                 Title is required
               </span>
             )}
@@ -126,7 +147,7 @@ function SubSectionModal({ modalData, setModalData }) {
 
           <div className="flex flex-col gap-2">
             <label className="text-[14px] text-richblack-5">
-              Lecture Description <sup className="text-pink-200">*</sup>
+              Lecture Description <sup className="text-pink-500">*</sup>
             </label>
             <textarea
               placeholder="Enter lecture description"
@@ -135,34 +156,53 @@ function SubSectionModal({ modalData, setModalData }) {
               {...register("description", { required: true })}
             />
             {errors.description && (
-              <span className="text-xs text-pink-200">
+              <span className="text-xs text-pink-500">
                 Description is required
               </span>
             )}
           </div>
 
-          {!isEdit && (
+          <div className="flex flex-col gap-2">
+            <label className="text-[14px] text-richblack-5">
+              Lecture Video
+              {!isEdit && <sup className="text-pink-500"> *</sup>}
+            </label>
+            <div
+              {...getRootProps()}
+              className="grid cursor-pointer place-items-center rounded-lg border border-dashed border-richblack-500 bg-richblack-700 p-6 text-center text-richblack-200"
+            >
+              <input {...getInputProps()} />
+              {videoPreview ? (
+                <video
+                  src={videoPreview}
+                  controls
+                  className="max-h-[150px] rounded-md"
+                />
+              ) : (
+                <div className="flex flex-col items-center gap-2">
+                  <AiOutlineUpload className="text-3xl" />
+                  <p>Drag and drop a video, or click to browse</p>
+                  {isEdit && (
+                    <p className="text-xs text-richblack-400">
+                      Leave empty to keep the current video
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {loading && uploadProgress !== null && (
             <div className="flex flex-col gap-2">
-              <label className="text-[14px] text-richblack-5">
-                Lecture Video <sup className="text-pink-200">*</sup>
-              </label>
-              <div
-                {...getRootProps()}
-                className="grid cursor-pointer place-items-center rounded-lg border border-dashed border-richblack-500 bg-richblack-700 p-6 text-center text-richblack-200"
-              >
-                <input {...getInputProps()} />
-                {videoPreview ? (
-                  <video
-                    src={videoPreview}
-                    controls
-                    className="max-h-[150px] rounded-md"
-                  />
-                ) : (
-                  <div className="flex flex-col items-center gap-2">
-                    <AiOutlineUpload className="text-3xl" />
-                    <p>Drag and drop a video, or click to browse</p>
-                  </div>
-                )}
+              <div className="flex items-center justify-between text-xs text-richblack-200">
+                <span>Uploading video...</span>
+                <span>{uploadProgress}%</span>
+              </div>
+              <div className="h-2 w-full overflow-hidden rounded-full bg-richblack-700">
+                <div
+                  className="h-full rounded-full bg-yellow-50 transition-all duration-300"
+                  style={{ width: `${uploadProgress}%` }}
+                />
               </div>
             </div>
           )}
@@ -190,3 +230,4 @@ function SubSectionModal({ modalData, setModalData }) {
 }
 
 export default SubSectionModal;
+

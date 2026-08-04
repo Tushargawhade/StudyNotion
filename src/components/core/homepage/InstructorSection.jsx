@@ -11,7 +11,7 @@ const InstructorSection = () => {
         <div className='flex gap-20 items-center'>
 
             <div className='w-[50%] '>
-                <img src={Instructor} alt="Instructor" className='shadow-white' />
+                <img src={Instructor} alt="Instructor" className='shadow-[#DBEAFE]' />
             </div>
 
             <div className='w-[50%] flex flex-col gap-10 '>
@@ -22,7 +22,7 @@ const InstructorSection = () => {
                 </div>
 
                 <p className='text-richblack-300 text-[16px] font-medium w-[80%]'>
-                    Instructors from around the world teach millions of students on StudyNotion. We provide the tools and skills to teach what you love.
+                    Instructors from around the world teach millions of students on StudyVerse. We provide the tools and skills to teach what you love.
                 </p>
 
                 <div className='w-fit'>

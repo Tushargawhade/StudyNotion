@@ -61,7 +61,10 @@ exports.categoryPageDetails = async (req, res) => {
       .populate({
         path: "courses",
         match: { status: "Published" },
-        populate: { path: "ratingAndReviews" },
+        populate: [
+          { path: "ratingAndReviews" },
+          { path: "instructor" },
+        ],
       })
       .exec();
 
@@ -88,6 +91,10 @@ exports.categoryPageDetails = async (req, res) => {
         .populate({
           path: "courses",
           match: { status: "Published" },
+          populate: [
+            { path: "ratingAndReviews" },
+            { path: "instructor" },
+          ],
         })
         .exec();
     }

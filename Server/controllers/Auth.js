@@ -33,7 +33,6 @@ exports.otp = async (req, res) => {
         upperCaseAlphabets : false,
         specialChars : false
     });
-    console.log("otp generated hua-> ",otp);
 
     // check otp is unique or not
     const result = await OTP.findOne({otp: otp});
@@ -56,14 +55,11 @@ exports.otp = async (req, res) => {
 
     // create opt entry in db 
     const otpBody = await OTP.create(otpPayload);
-    console.log(otpBody)
 
     // return successful response  
     res.status(200).json({
         status : true,
         message: "OTP sent successfully..",
-        otp : otpBody.otp,
-
     })
 
   } 
@@ -127,7 +123,6 @@ exports.signup = async (req,res)=>{
 
       // find most recent otp stored for the user
       const recentOtp =  await OTP.findOne({email}).sort({createdAt:-1}).limit(1);
-      console.log("recent otp -> ",recentOtp.otp);
     
 
       // validate otp 
@@ -219,6 +214,22 @@ exports.login = async (req,res) =>{
           message : "User is not registerd Please SignUp"
         })
 
+      }
+
+      // verify selected account type matches the account
+      if(req.body.accountType && user.accountType !== req.body.accountType){
+        return res.status(401).json({
+          success: false,
+          message : `Please login with your ${user.accountType} account`
+        })
+      }
+
+      // block blocked students from logging in
+      if(!user.active){
+        return res.status(403).json({
+          success: false,
+          message : "Your account has been blocked. Please contact support."
+        })
       }
 
 
@@ -318,6 +329,7 @@ exports.changePassword=async(req,res)=>{
 		try {
 			const emailResponse = await mailSender(
 				updatedUserDetails.email,
+				"Password Updated",
 				passwordUpdated(
 					updatedUserDetails.email,
 					`Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`

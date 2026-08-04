@@ -46,6 +46,15 @@ function MyCourses() {
     setConfirmationModal(null);
   };
 
+  const lectureCount = (course) =>
+    course.courseContent?.reduce(
+      (acc, s) => acc + (s.subSection?.length || 0),
+      0
+    ) || 0;
+
+  const categoryName = (course) =>
+    typeof course.category === "object" ? course.category.name : course.category;
+
   if (courses.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 rounded-md border border-richblack-700 bg-richblack-800 p-10 text-center">
@@ -76,57 +85,76 @@ function MyCourses() {
         </button>
       </div>
 
-      <Table className="rounded-xl border border-richblack-700 bg-richblack-800">
+      <Table className="overflow-hidden rounded-xl border border-richblack-700 bg-richblack-800">
         <Thead>
-          <Tr className="border-b border-richblack-700 text-sm text-richblack-200">
-            <Th className="!text-left">Course</Th>
-            <Th>Lectures</Th>
-            <Th>Price</Th>
-            <Th>Actions</Th>
+          <Tr className="border-b border-richblack-700 bg-richblack-900 text-sm text-richblack-200">
+            <Th className="!px-4 !py-3 !text-left font-semibold">Course</Th>
+            <Th className="!px-4 !py-3 !text-left font-semibold">Status</Th>
+            <Th className="!px-4 !py-3 !text-left font-semibold">Lectures</Th>
+            <Th className="!px-4 !py-3 !text-left font-semibold">Students</Th>
+            <Th className="!px-4 !py-3 !text-left font-semibold">Price</Th>
+            <Th className="!px-4 !py-3 !text-left font-semibold">Actions</Th>
           </Tr>
         </Thead>
         <Tbody>
           {courses.map((course) => (
             <Tr
               key={course._id}
-              className="border-b border-richblack-700 last:border-b-0"
+              className="border-b border-richblack-700 transition-colors last:border-b-0 hover:bg-richblack-900"
             >
-              <Td className="!pl-4">
+              <Td className="!px-4 !py-4">
                 <div className="flex items-center gap-3">
-                  <img
-                    src={course.thumbnail}
-                    alt={course.courseName}
-                    className="h-10 w-14 rounded-md object-cover"
-                  />
-                  <div>
-                    <p className="text-sm font-medium text-richblack-5">
+                  {course.thumbnail ? (
+                    <img
+                      src={course.thumbnail}
+                      alt={course.courseName}
+                      className="h-12 w-20 shrink-0 rounded-md object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-12 w-20 shrink-0 items-center justify-center rounded-md bg-richblack-700 text-xl text-richblack-400">
+                      <FiPlus />
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-richblack-5">
                       {course.courseName}
                     </p>
-                    <p className="text-xs text-richblack-300">
-                      {course.courseContent?.length || 0} sections
+                    <p className="mt-0.5 truncate text-xs text-richblack-300">
+                      {categoryName(course) || "Uncategorized"}
                     </p>
                   </div>
                 </div>
               </Td>
-              <Td className="text-sm text-richblack-200">
-                {course.courseContent?.reduce(
-                  (acc, s) => acc + (s.subSection?.length || 0),
-                  0
-                ) || 0}{" "}
-                lectures
+              <Td className="!px-4 !py-4">
+                <span
+                  className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${
+                    course.status === "Published"
+                      ? "bg-caribbeangreen-50 text-caribbeangreen-600"
+                      : "bg-richblack-700 text-richblack-300"
+                  }`}
+                >
+                  {course.status || "Draft"}
+                </span>
               </Td>
-              <Td className="text-sm text-richblack-200">
-                Rs. {course.price}
+              <Td className="!px-4 !py-4 text-sm text-richblack-200">
+                {lectureCount(course)}
               </Td>
-              <Td>
-                <div className="flex items-center gap-3">
+              <Td className="!px-4 !py-4 text-sm text-richblack-200">
+                {course.studentsEnrolled?.length || 0}
+              </Td>
+              <Td className="!px-4 !py-4 text-sm font-medium text-richblack-5">
+                ₹{course.price}
+              </Td>
+              <Td className="!px-4 !py-4">
+                <div className="flex items-center gap-4">
                   <button
                     onClick={() =>
                       navigate(`/dashboard/edit-course/${course._id}`, {
                         state: { course },
                       })
                     }
-                    className="text-richblack-200 hover:text-yellow-50"
+                    className="text-richblack-200 transition-colors hover:text-yellow-50"
+                    title="Edit"
                   >
                     <FiEdit3 className="text-lg" />
                   </button>
@@ -141,7 +169,8 @@ function MyCourses() {
                         btn2Handler: () => setConfirmationModal(null),
                       })
                     }
-                    className="text-richblack-200 hover:text-pink-200"
+                    className="text-richblack-200 transition-colors hover:text-pink-500"
+                    title="Delete"
                   >
                     <FiTrash2 className="text-lg" />
                   </button>

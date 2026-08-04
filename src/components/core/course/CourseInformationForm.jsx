@@ -173,7 +173,7 @@ function CourseInformationForm() {
         <div className="flex flex-col gap-5 lg:w-1/2">
           <div className="flex flex-col gap-2">
             <label className="text-[14px] text-richblack-5">
-              Course Title <sup className="text-pink-200">*</sup>
+              Course Title <sup className="text-pink-500">*</sup>
             </label>
             <input
               id="courseTitle"
@@ -182,7 +182,7 @@ function CourseInformationForm() {
               {...register("courseTitle", { required: true })}
             />
             {errors.courseTitle && (
-              <span className="text-xs text-pink-200">
+              <span className="text-xs text-pink-500">
                 Course title is required
               </span>
             )}
@@ -190,7 +190,7 @@ function CourseInformationForm() {
 
           <div className="flex flex-col gap-2">
             <label className="text-[14px] text-richblack-5">
-              Course Short Description <sup className="text-pink-200">*</sup>
+              Course Short Description <sup className="text-pink-500">*</sup>
             </label>
             <textarea
               id="courseShortDesc"
@@ -200,7 +200,7 @@ function CourseInformationForm() {
               {...register("courseShortDesc", { required: true })}
             />
             {errors.courseShortDesc && (
-              <span className="text-xs text-pink-200">
+              <span className="text-xs text-pink-500">
                 Course description is required
               </span>
             )}
@@ -208,7 +208,7 @@ function CourseInformationForm() {
 
           <div className="flex flex-col gap-2">
             <label className="text-[14px] text-richblack-5">
-              Course Price <sup className="text-pink-200">*</sup>
+              Course Price <sup className="text-pink-500">*</sup>
             </label>
             <input
               id="coursePrice"
@@ -221,7 +221,7 @@ function CourseInformationForm() {
               })}
             />
             {errors.coursePrice && (
-              <span className="text-xs text-pink-200">
+              <span className="text-xs text-pink-500">
                 Course price is required
               </span>
             )}
@@ -229,7 +229,7 @@ function CourseInformationForm() {
 
           <div className="flex flex-col gap-2">
             <label className="text-[14px] text-richblack-5">
-              Course Category <sup className="text-pink-200">*</sup>
+              Course Category <sup className="text-pink-500">*</sup>
             </label>
             <select
               id="courseCategory"
@@ -247,7 +247,7 @@ function CourseInformationForm() {
               ))}
             </select>
             {errors.courseCategory && (
-              <span className="text-xs text-pink-200">
+              <span className="text-xs text-pink-500">
                 Category is required
               </span>
             )}
@@ -255,7 +255,7 @@ function CourseInformationForm() {
 
           <div className="flex flex-col gap-2">
             <label className="text-[14px] text-richblack-5">
-              Course Tags <sup className="text-pink-200">*</sup>
+              Course Tags <sup className="text-pink-500">*</sup>
             </label>
             <div className="flex gap-2">
               <input
@@ -290,7 +290,7 @@ function CourseInformationForm() {
                     <button
                       type="button"
                       onClick={() => removeTag(tag)}
-                      className="text-richblack-200 hover:text-pink-200"
+                      className="text-richblack-200 hover:text-pink-500"
                     >
                       x
                     </button>
@@ -304,7 +304,7 @@ function CourseInformationForm() {
         <div className="flex flex-col gap-5 lg:w-1/2">
           <div className="flex flex-col gap-2">
             <label className="text-[14px] text-richblack-5">
-              Course Thumbnail <sup className="text-pink-200">*</sup>
+              Course Thumbnail <sup className="text-pink-500">*</sup>
             </label>
             <div
               {...getRootProps()}
@@ -328,7 +328,7 @@ function CourseInformationForm() {
 
           <div className="flex flex-col gap-2">
             <label className="text-[14px] text-richblack-5">
-              Benefits of the Course <sup className="text-pink-200">*</sup>
+              Benefits of the Course <sup className="text-pink-500">*</sup>
             </label>
             <textarea
               id="instructorBenefits"
@@ -338,7 +338,7 @@ function CourseInformationForm() {
               {...register("instructorBenefits", { required: true })}
             />
             {errors.instructorBenefits && (
-              <span className="text-xs text-pink-200">
+              <span className="text-xs text-pink-500">
                 Benefits are required
               </span>
             )}
@@ -346,7 +346,7 @@ function CourseInformationForm() {
 
           <div className="flex flex-col gap-2">
             <label className="text-[14px] text-richblack-5">
-              Course Instructions <sup className="text-pink-200">*</sup>
+              Course Instructions <sup className="text-pink-500">*</sup>
             </label>
             <textarea
               id="courseIntroduction"
@@ -356,7 +356,7 @@ function CourseInformationForm() {
               {...register("courseIntroduction", { required: true })}
             />
             {errors.courseIntroduction && (
-              <span className="text-xs text-pink-200">
+              <span className="text-xs text-pink-500">
                 Instructions are required
               </span>
             )}
@@ -376,3 +376,4 @@ function CourseInformationForm() {
 }
 
 export default CourseInformationForm;
+

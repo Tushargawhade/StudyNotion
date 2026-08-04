@@ -1,93 +1,85 @@
-import React, { useState } from 'react'
-import {HomePageExplore} from '../../../data/homepage_explore'
-import HighlightedText from './HighlightedText';
-import CourseCard from './CourseCard';
+import React from "react";
+import { Link } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa6";
+import { FiBookOpen } from "react-icons/fi";
+import HighlightedText from "./HighlightedText";
 
-
-const tabsName =[
-    "Free",
-    "New to coding",
-    "Most popular",
-    "Skills paths",
-    "Career paths"
-
-]
-
-
-
-const ExploreMore = () => {
-
-    const [currentTab, setCurrentTab]  = useState(tabsName[0]);
-    const [course, setCourse] =  useState(HomePageExplore[0].courses);
-    const [currentCard, setCurrentCard] = useState(HomePageExplore[0].courses[0].heading)
-
-
-    const setMyCards = (value)=>{
-        setCurrentTab(value);
-        const result = HomePageExplore.filter((course)=> course.tag === value);
-        setCourse(result[0].courses)
-        setCurrentCard(result[0].courses[0].heading)
-
-    }
-
-
+function ExploreMore({ courses }) {
+  const categories = React.useMemo(() => {
+    const groups = {};
+    (courses || []).forEach((course) => {
+      const name = course.category?.name || "Uncategorized";
+      if (!groups[name]) {
+        groups[name] = [];
+      }
+      groups[name].push(course);
+    });
+    return Object.entries(groups)
+      .map(([name, list]) => ({ name, courses: list }))
+      .sort((a, b) => b.courses.length - a.courses.length);
+  }, [courses]);
 
   return (
-    <div>
-
-        <div className='text-4xl font-semibold text-center'>
-            Unlock the 
-            <HighlightedText text={"Power of code"} />
-        </div>
-
-        <p className='text-center text-richblack-300 text-md mt-2 '>
-            Learn to build anything you can imagine 
+    <div className="w-full py-8 ">
+      <div className="text-center">
+        <h2 className="text-4xl font-semibold">
+          Explore by <HighlightedText text="Category" />
+        </h2>
+        <p className="mx-auto mt-3 max-w-xl text-base font-medium text-richblack-300">
+          Jump into a topic that interests you and start building real skills
+          with expert-led courses.
         </p>
+      </div>
 
-        <div className='mt-5 mb-12 px-1 py-1 flex rounded-full bg-richblack-800 border-richblack-400 '>
-        {
-            tabsName.map((elem,idx)=>{
-                return (
-                    <div 
-                    className={`text-[16px] flex items-center gap-2 rounded-full transition-all duration-200 cursor-pointer hover:bg-richblack-900  hover:text-richblack-5 px-6 py-2 ${currentTab === elem ? "bg-richblack-900 text-richblack-5 font-medium"  : "text-richblue-50"}`}
-                    key={idx}
-                    onClick={()=> setMyCards(elem)}
-                    >
-                        {elem}
-    
-                    </div>
-                )
-            })
-        }
-        </div>
+      <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {categories.map((category) => {
+          const thumbnail = category.courses[0]?.thumbnail;
+          return (
+            <Link
+              to="/catalog"
+              key={category.name}
+              className="group overflow-hidden rounded-xl border border-richblack-700 bg-richblack-800 transition-all duration-300 hover:-translate-y-1 hover:border-richblack-500 hover:shadow-lg hover:shadow-black/40"
+            >
+              <div className="relative overflow-hidden">
+                {thumbnail ? (
+                  <img
+                    src={thumbnail}
+                    alt={category.name}
+                    className="aspect-video w-full object-cover transition-all duration-300 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="flex aspect-video w-full items-center justify-center bg-richblack-700">
+                    <FiBookOpen className="text-4xl text-richblack-400" />
+                  </div>
+                )}
+                <span className="absolute right-2.5 top-2.5 rounded-md bg-yellow-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-richblack-900">
+                  {category.courses.length} course
+                  {category.courses.length > 1 ? "s" : ""}
+                </span>
+              </div>
 
-        <div className='lg:h-[150px]'> </div>
-
-        {/* courses kee card */}
-
-        <div className="lg:absolute mt-4 gap-10 justify-center lg:gap-0 flex lg:justify-between flex-wrap w-full lg:bottom-[0] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[50%] text-black lg:mb-0 mb-7 lg:px-0 px-3">
-
-            {
-                course.map((elem,idx)=>{
-                    return (
-                        <CourseCard 
-                            key={idx}
-                            cardData={elem}
-                            currentCard={currentCard}
-                            setCurrentCard={setCurrentCard}
-                        />    
-
-                    )
-                })
-            }
-
-
-
-        </div>
-
-
+              <div className="flex items-center justify-between p-4">
+                <div>
+                  <h3 className="text-base font-semibold text-richblack-5">
+                    {category.name}
+                  </h3>
+                  {category.courses[0]?.category?.description && (
+                    <p className="mt-1 line-clamp-1 text-xs text-richblack-300">
+                      {category.courses[0].category.description}
+                    </p>
+                  )}
+                </div>
+                <span className="flex items-center gap-2 text-sm font-medium text-yellow-50">
+                  Browse
+                  <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
     </div>
-  )
+  );
 }
 
-export default ExploreMore
+export default ExploreMore;
