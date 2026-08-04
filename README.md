@@ -105,7 +105,7 @@ Instructors and students are created through the normal signup flow (choose role
 
 ```bash
 git clone <repo-url>
-cd StudyNotionProj
+cd StudyVerse
 npm install
 cd server && npm install
 ```
