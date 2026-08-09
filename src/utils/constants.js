@@ -3,8 +3,3 @@ export const ACCOUNT_TYPE = {
   INSTRUCTOR: "Instructor",
   ADMIN: "Admin",
 };
-
-export const USER_STATUS = {
-  ACTIVE: "Active",
-  INACTIVE: "Inactive",
-};

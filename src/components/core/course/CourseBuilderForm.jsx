@@ -134,7 +134,7 @@ function CourseBuilderForm() {
       </div>
 
       <div className="space-y-4 rounded-md border border-richblack-700 bg-richblack-900 p-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-lg font-semibold text-richblack-5">
             Course Builder
           </p>
@@ -188,7 +188,7 @@ function CourseBuilderForm() {
               key={section._id}
               className="rounded-md border border-richblack-700 bg-richblack-800"
             >
-              <div className="flex items-center justify-between p-4">
+              <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
                 {editSectionName === section._id ? (
                   <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center">
                     <input
@@ -225,14 +225,14 @@ function CourseBuilderForm() {
                           : section._id
                       )
                     }
-                    className="flex items-center gap-2 text-lg font-medium text-richblack-5"
+                    className="flex min-w-0 items-center gap-2 text-lg font-medium text-richblack-5"
                   >
                     <FaChevronDown
                       className={`transition-all ${
                         expandedSection === section._id ? "rotate-180" : ""
                       }`}
                     />
-                    <span>{section.sectionName}</span>
+                    <span className="truncate">{section.sectionName}</span>
                   </button>
                 )}
 
@@ -284,12 +284,12 @@ function CourseBuilderForm() {
                       {section.subSection.map((subSection) => (
                         <div
                           key={subSection._id}
-                          className="flex items-center justify-between rounded-md bg-richblack-900 px-4 py-3"
+                          className="flex flex-col gap-3 rounded-md bg-richblack-900 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
                         >
-                          <div className="flex items-center gap-3">
+                          <div className="flex min-w-0 items-center gap-3">
                             <AiOutlineVideoCamera className="text-lg text-richblack-200" />
-                            <div>
-                              <p className="text-sm font-medium text-richblack-5">
+                            <div className="min-w-0">
+                              <p className="truncate text-sm font-medium text-richblack-5">
                                 {subSection.title}
                               </p>
                               <p className="text-xs text-richblack-300">

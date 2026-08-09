@@ -32,6 +32,7 @@ function Template({ title, description1, description2, image, formType }) {
               width={558}
               height={504}
               loading="lazy"
+              className="w-full sm:w-auto"
             />
             <img
               src={image}
@@ -39,7 +40,7 @@ function Template({ title, description1, description2, image, formType }) {
               width={558}
               height={504}
               loading="lazy"
-              className="absolute -top-4 right-4 z-10"
+              className="absolute -top-4 right-4 z-10 w-[calc(100%-2rem)] sm:w-auto"
             />
           </div>
         </div>

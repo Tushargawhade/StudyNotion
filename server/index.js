@@ -2,6 +2,8 @@ const express = require('express');
 const os = require('os');
 const app = express();
 
+app.set('trust proxy', 1);
+
 const courseRouter = require("./routes/Courses");
 const profileRouter = require('./routes/Profile');
 const userRouter = require('./routes/User');

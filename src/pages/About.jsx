@@ -23,7 +23,7 @@ function About() {
         <p className="text-sm font-semibold text-yellow-50 uppercase tracking-widest">
           About Us
         </p>
-        <h1 className="text-4xl font-semibold">
+        <h1 className="text-3xl font-semibold sm:text-4xl">
           Learn without limits with{" "}
           <span className="bg-gradient-to-r from-yellow-50 via-caribbeangreen-200 to-blue-200 bg-clip-text text-transparent">
             StudyVerse
@@ -34,8 +34,8 @@ function About() {
           to everyone, everywhere. Our platform brings together expert
           instructors, hands-on projects, and a thriving community of learners.
         </p>
-        <div className="mt-4 flex gap-6">
-          <CTAButton active={true} linkto="/signup">
+        <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+          <CTAButton active={true} linkto="/catalog">
             Start Learning
           </CTAButton>
           <CTAButton active={false} linkto="/contact">
@@ -81,11 +81,11 @@ function About() {
 
       <section className="pb-16 text-center">
         <h2 className="text-3xl font-semibold">Ready to get started?</h2>
-        <p className="mx-auto mt-3 w-[70%] text-richblack-200">
+        <p className="mx-auto mt-3 w-[90%] text-richblack-200 sm:w-[70%]">
           Join StudyVerse today and unlock your potential with courses built
           for real-world success.
         </p>
-        <div className="mt-6 flex justify-center gap-6">
+        <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6">
           <Link
             to="/signup"
             className="rounded-md bg-yellow-50 px-6 py-3 font-semibold text-richblack-900 hover:bg-yellow-25"

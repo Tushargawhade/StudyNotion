@@ -7,7 +7,7 @@ function PrivateRoute({ children }) {
   if (token !== null) {
     return children;
   } else {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace />;
   }
 }
 

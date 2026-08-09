@@ -7,6 +7,7 @@ import { logout } from "./services/operations/authAPI";
 import { setUser } from "./slices/profileSlice";
 import Home from "./pages/Home";
 import Navbar from "./components/common/Navbar";
+import ScrollToTop from "./components/common/ScrollToTop";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import VerifyEmail from "./pages/VerifyEmail";
@@ -62,7 +63,8 @@ function App() {
   }, [token, user, dispatch, navigate]);
 
   return (
-    <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
+    <div className="flex min-h-screen w-full flex-col bg-richblack-900 font-inter">
+      <ScrollToTop />
       <Navbar />
 
       <Routes>

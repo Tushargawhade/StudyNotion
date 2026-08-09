@@ -5,7 +5,7 @@ import { axiosInstance } from "../services/apiconnector";
 
 const { VIDEO_UPLOAD_SIGNATURE_API } = apis;
 
-export async function getVideoUploadSignature(token) {
+async function getVideoUploadSignature(token) {
   try {
     const response = await axiosInstance.get(VIDEO_UPLOAD_SIGNATURE_API, {
       headers: {

@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   wishlist: [],
-  loading: false,
 };
 
 const wishlistSlice = createSlice({
@@ -18,9 +17,6 @@ const wishlistSlice = createSlice({
     removeFromWishlist(state, value) {
       state.wishlist = state.wishlist.filter((id) => id !== value.payload);
     },
-    setWishlistLoading(state, value) {
-      state.loading = value.payload;
-    },
   },
 });
 
@@ -28,7 +24,6 @@ export const {
   setWishlist,
   addToWishlist,
   removeFromWishlist,
-  setWishlistLoading,
 } = wishlistSlice.actions;
 
 export default wishlistSlice.reducer;

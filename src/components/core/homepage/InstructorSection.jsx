@@ -6,31 +6,31 @@ import { FaArrowRight } from "react-icons/fa6";
 
 const InstructorSection = () => {
   return (
-    <div className='mt-16'>
+    <div className='mt-2'>
 
-        <div className='flex gap-20 items-center'>
+        <div className='flex flex-col gap-10 items-center lg:flex-row lg:gap-20'>
 
-            <div className='w-[50%] '>
-                <img src={Instructor} alt="Instructor" className='shadow-[#DBEAFE]' />
+            <div className='w-full lg:w-[50%] '>
+                <img src={Instructor} alt="Instructor" className='w-full shadow-[#DBEAFE]' />
             </div>
 
-            <div className='w-[50%] flex flex-col gap-10 '>
+            <div className='w-full lg:w-[50%] flex flex-col gap-10 items-center lg:items-start text-center lg:text-left'>
                 
-                <div className='text-4xl font-semibold w-[50%]'>
+                <div className='text-3xl lg:text-4xl font-semibold w-full lg:w-[50%]'>
                     Become an 
                     <HighlightedText text={"Instructor"} />
                 </div>
 
-                <p className='text-richblack-300 text-[16px] font-medium w-[80%]'>
+                <p className='text-richblack-300 text-[16px] font-medium w-full lg:w-[80%]'>
                     Instructors from around the world teach millions of students on StudyVerse. We provide the tools and skills to teach what you love.
                 </p>
 
                 <div className='w-fit'>
 
                     <CTAButton active={true} linkto={"/signup"}>
-                        <div className='flex gap-2'>
-                            Start Learning Today 
-                            <FaArrowRight />
+                        <div className='flex gap-2 items-center justify-center  '>
+                            Become an Instructor
+                            <FaArrowRight  />
                         </div>
                     </CTAButton>
 

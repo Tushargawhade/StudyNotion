@@ -37,7 +37,32 @@ exports.createCategory = async (req, res) => {
 // Show all category handler function
 exports.showAllCategory = async (req, res) => {
   try {
-    const allCategory = await Category.find({}, { name: true, description: true });
+    const allCategory = await Category.aggregate([
+      {
+        $lookup: {
+          from: "courses",
+          let: { categoryId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$category", "$$categoryId"] },
+                status: "Published",
+              },
+            },
+            { $project: { _id: 1 } },
+          ],
+          as: "publishedCourses",
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          description: 1,
+          courseCount: { $size: "$publishedCourses" },
+        },
+      },
+      { $sort: { courseCount: -1, name: 1 } },
+    ]);
 
     return res.status(200).json({
       success: true,

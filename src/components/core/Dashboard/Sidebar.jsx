@@ -41,7 +41,7 @@ function Sidebar() {
   };
 
   return (
-    <div className="flex min-w-[222px] flex-col border-r-[1px] border-r-richblack-800 bg-richblack-900 h-[calc(100vh-3.5rem)] py-10 overflow-y-auto">
+    <div className="flex min-w-[222px] flex-col border-r-[1px] border-r-richblack-800 bg-richblack-900 h-[calc(100vh-4rem)] py-10 overflow-y-auto">
       <div className="flex flex-col gap-2 px-4">
         {sidebarLinks.map((link) => {
           if (link?.type && user?.accountType !== link.type) {
@@ -51,7 +51,13 @@ function Sidebar() {
           const Icon = iconComponents[link.icon] || VscDashboard;
 
           return (
-            <Link to={link.path} key={link.id}>
+            <Link
+              to={link.path}
+              key={link.id}
+              onClick={(e) => {
+                if (matchRoute(link.path)) e.preventDefault();
+              }}
+            >
               <div
                 className={`relative px-8 py-2 text-sm font-medium ${
                   matchRoute(link.path)
@@ -86,6 +92,9 @@ function Sidebar() {
 
         <Link
           to="/dashboard/settings"
+          onClick={(e) => {
+            if (matchRoute("/dashboard/settings")) e.preventDefault();
+          }}
           className={`flex items-center gap-x-2 px-8 py-2 text-sm font-medium transition-all ${
             matchRoute("/dashboard/settings")
               ? "bg-blue-5 text-yellow-50"

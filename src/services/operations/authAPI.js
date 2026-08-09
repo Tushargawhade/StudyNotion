@@ -87,7 +87,7 @@ export function login(email, password, accountType, navigate) {
       dispatch(setToken(response.data.token));
       dispatch(setUser(response.data.user));
       localStorage.setItem("token", JSON.stringify(response.data.token));
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Login failed. Please try again"
@@ -104,7 +104,7 @@ export function logout(navigate) {
     dispatch(setToken(null));
     dispatch(setUser(null));
     toast.success("Logged Out");
-    navigate("/");
+    navigate("/", { replace: true });
   };
 }
 

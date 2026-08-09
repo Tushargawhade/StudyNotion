@@ -27,7 +27,7 @@ const Home = () => {
     })();
   }, []);
 
-  const latestCourses = courses.slice(0, 8);
+  const latestCourses = courses.slice(0, 4);
   const totalStudents = courses.reduce(
     (acc, course) => acc + (course.studentsEnrolled?.length || 0),
     0
@@ -53,7 +53,7 @@ const Home = () => {
 
             </Link>
              
-            <div className='mt-6 text-4xl font-semibold'>
+            <div className='mt-6 text-3xl font-semibold sm:text-4xl'>
                 Empower Your Future with 
                 <HighlightedText  text={"Coding Skills"}/>
 
@@ -63,10 +63,10 @@ const Home = () => {
                 With our online coding courses, you can learn at your own pace, from anywhere in the world, and get access to a wealth of resources, including hands-on projects, quizzes, and personalized feedback from instructors. 
             </div>
 
-            <div className='flex flex-row gap-10 mt-5'>
+            <div className='flex flex-col items-center gap-4 mt-5 sm:flex-row sm:gap-10'>
 
-                <CTAButton active={true} linkto="/signup">
-                    Start Learning Free
+                <CTAButton active={true} linkto="/catalog">
+                    Start Learning
                 </CTAButton>
 
                 <CTAButton active={false} linkto="/catalog">
@@ -104,16 +104,16 @@ const Home = () => {
 
                     ctabtn1={
                         {
-                            btnText: "try it yourself ",
-                            linkto: "/signup",
+                            btnText: "Browse Courses",
+                            linkto: "/catalog",
                             active : true
                         }
                     }
 
                     ctabtn2={
                         {
-                            btnText: "learn more",
-                            linkto: "/login",
+                            btnText: "View All Courses",
+                            linkto: "/catalog",
                             active : false
                         }
                     }
@@ -136,16 +136,16 @@ const Home = () => {
 
                     ctabtn1={
                         {
-                            btnText: "Continue Lesson",
-                            linkto: "/signup",
+                            btnText: "Start Coding Now",
+                            linkto: "/catalog",
                             active : true
                         }
                     }
 
                     ctabtn2={
                         {
-                            btnText: "Learn More",
-                            linkto: "/login",
+                            btnText: "Discover Courses",
+                            linkto: "/catalog",
                             active : false
                         }
                     }
@@ -170,32 +170,6 @@ const Home = () => {
 
         <div className=' bg-blue-5 text-richblack-25 '>
 
-            {/* <div className='homepage_bg h-[310px]'>
-
-                   <div className='w-11/12 max-w-maxContent flex flex-col items-center justify-center gap-5 mx-auto'>
-                        <div className='h-[180px]'>
-
-                        </div>
-
-                        <div className='flex  mt-6 gap-8 text-richblack-25'>
-
-                            <CTAButton active={true} linkto={"/catalog"}  >
-                                <div className='flex gap-3 items-center'>
-                                    Explore Full Catalog
-                                    <FaArrowRight/>
-                                </div>
-                            </CTAButton>
-
-                            <CTAButton active={false} linkto={"/login"}>
-                                Learn More
-                            </CTAButton>
-
-                        </div>
-
-                   </div>
-
-            </div> */}
-
             <div className='w-11/12 max-w-maxContent flex flex-col items-center justify-center gap-7 mx-auto mb-10 mt-5'>
                 
                 <div className='flex flex-col gap-10 lg:flex-row lg:gap-16 mt-10'>
@@ -208,8 +182,8 @@ const Home = () => {
                     <div className='flex flex-col gap-10 w-full lg:w-[40%] items-start'>
                         <p className='font-semibold text-richblack-600'>StudyVerse lets you learn on your own terms. Today, to be a competitive specialist requires more than professional skills.</p>
 
-                        <CTAButton active={true} linkto={"/signup"}>
-                            Learn More
+                        <CTAButton active={true} linkto={"/catalog"}>
+                            Explore Catalog
                         </CTAButton>
 
                     </div>
@@ -225,10 +199,6 @@ const Home = () => {
 
 
             </div>
-
-         
-
-
 
         </div>
 

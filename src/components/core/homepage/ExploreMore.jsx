@@ -16,7 +16,8 @@ function ExploreMore({ courses }) {
     });
     return Object.entries(groups)
       .map(([name, list]) => ({ name, courses: list }))
-      .sort((a, b) => b.courses.length - a.courses.length);
+      .sort((a, b) => b.courses.length - a.courses.length)
+      .slice(0, 3);
   }, [courses]);
 
   return (

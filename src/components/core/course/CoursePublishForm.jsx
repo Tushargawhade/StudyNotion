@@ -107,7 +107,7 @@ function CoursePublishForm() {
         </div>
       </div>
 
-      <div className="flex justify-end gap-x-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:justify-end sm:gap-x-4">
         <IconBtn text="Back" onclick={goBack} outline />
         <IconBtn
           text="Save as Draft"

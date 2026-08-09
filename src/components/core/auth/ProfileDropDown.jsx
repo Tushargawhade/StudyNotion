@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineCaretDown } from "react-icons/ai";
 import { FiChevronRight, FiEdit3, FiLogOut, FiPlayCircle } from "react-icons/fi";
 import { FaCircleUser } from "react-icons/fa6";
@@ -13,6 +13,13 @@ function ProfileDropDown() {
   const { user } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const goTo = (path) => {
+    if (location.pathname !== path) {
+      navigate(path);
+    }
+  };
 
   const [open, setOpen] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(null);
@@ -79,7 +86,7 @@ function ProfileDropDown() {
             <div
               onClick={() => {
                 setOpen(false);
-                navigate("/dashboard/my-learning");
+                goTo("/dashboard/my-learning");
               }}
               className={menuItemClasses}
             >
@@ -90,7 +97,7 @@ function ProfileDropDown() {
             <div
               onClick={() => {
                 setOpen(false);
-                navigate("/dashboard/my-profile");
+                goTo("/dashboard/my-profile");
               }}
               className={menuItemClasses}
             >
@@ -101,7 +108,7 @@ function ProfileDropDown() {
             <div
               onClick={() => {
                 setOpen(false);
-                navigate("/dashboard/settings");
+                goTo("/dashboard/settings");
               }}
               className={menuItemClasses}
             >

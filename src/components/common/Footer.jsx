@@ -51,7 +51,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
             <div className="flex flex-col gap-2">
               <h1 className="mb-1 text-sm font-semibold text-richblack-50">
                 Company
@@ -81,7 +81,7 @@ const Footer = () => {
 
         <div className="mt-8 flex flex-col items-center justify-between gap-3 border-t border-richblack-700 pt-5 text-sm text-richblack-400 sm:flex-row">
           <div>© 2026 StudyVerse. All rights reserved.</div>
-          <div className="flex">
+          <div className="flex flex-wrap justify-center">
             {BottomFooter.map((item, i) => (
               <span
                 key={i}

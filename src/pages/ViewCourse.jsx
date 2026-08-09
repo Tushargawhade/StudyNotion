@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { FiChevronDown, FiMenu } from "react-icons/fi";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { getFullCourseDetails } from "../services/operations/myCourseAPI";
 import {
@@ -29,6 +30,7 @@ function ViewCourse() {
 
   const [currentVideo, setCurrentVideo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showChapters, setShowChapters] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -62,6 +64,7 @@ function ViewCourse() {
 
   const handleLectureClick = (lecture) => {
     setCurrentVideo(lecture);
+    setShowChapters(false);
     localStorage.setItem(`studyverse-resume-${courseId}`, lecture._id);
   };
 
@@ -101,8 +104,30 @@ function ViewCourse() {
       : 0;
 
   return (
-    <div className="relative flex min-h-[calc(100vh-3.5rem)]">
-      <div className="h-[calc(100vh-3.5rem)] w-1/3 overflow-y-auto border-r border-richblack-700 bg-richblack-900 p-4">
+    <div className="flex min-h-[calc(100vh-3.5rem)] flex-col lg:flex-row">
+      <div className="flex items-center justify-between border-b border-richblack-700 bg-richblack-900 px-4 py-3 lg:hidden">
+        <button
+          onClick={() => setShowChapters((prev) => !prev)}
+          className="flex items-center gap-2 rounded-md border border-richblack-600 px-3 py-1.5 text-sm font-medium text-richblack-25 transition-colors duration-200 hover:border-yellow-50 hover:text-yellow-50"
+          aria-label="Toggle course chapters"
+        >
+          {showChapters ? (
+            <FiChevronDown className="rotate-180 text-lg" />
+          ) : (
+            <FiMenu className="text-lg" />
+          )}
+          Chapters
+        </button>
+        <span className="text-xs font-medium text-richblack-300">
+          {completedVideos.length} / {totalNoOfVideos} done
+        </span>
+      </div>
+
+      <div
+        className={`${
+          showChapters ? "block" : "hidden"
+        } border-r border-richblack-700 bg-richblack-900 p-4 lg:block lg:h-[calc(100vh-3.5rem)] lg:w-1/3 lg:overflow-y-auto`}
+      >
         <div className="mb-4 rounded-md border border-richblack-700 bg-richblack-800 p-4">
           <img
             src={courseEntireData?.thumbnail}
@@ -133,7 +158,7 @@ function ViewCourse() {
         />
       </div>
 
-      <div className="h-[calc(100vh-3.5rem)] flex-1 overflow-y-auto">
+      <div className="h-auto flex-1 overflow-y-auto lg:h-[calc(100vh-3.5rem)]">
         {currentVideo ? (
           <VideoDetails video={currentVideo} courseId={courseId} />
         ) : (

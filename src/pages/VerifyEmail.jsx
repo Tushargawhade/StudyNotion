@@ -1,7 +1,5 @@
 import OtpForm from "../components/core/auth/OtpForm";
 import { useSelector } from "react-redux";
-import { HiOutlineArrowLeft } from "react-icons/hi";
-import { Link } from "react-router-dom";
 
 function VerifyEmail() {
   const { loading } = useSelector((state) => state.auth);
@@ -16,13 +14,6 @@ function VerifyEmail() {
             Verify Email
           </h1>
           <OtpForm />
-          <Link
-            to="/login"
-            className="mt-6 flex items-center gap-x-2 text-richblack-5"
-          >
-            <HiOutlineArrowLeft />
-            Back to Login
-          </Link>
         </div>
       )}
     </div>

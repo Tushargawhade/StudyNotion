@@ -6,7 +6,6 @@ const {
   COURSE_DETAILS_API,
   RATING_API,
   REVIEWS_API,
-  GET_CATEGORY_DETAILS_API,
   GET_ALL_COURSE_API,
   SEARCH_COURSES_API,
 } = endpoints;
@@ -39,16 +38,6 @@ export async function fetchCourseDetails(courseId) {
 
 export async function fetchCourseCategories() {
   const result = await apiConnector("GET", categories.CATEGORIES_API);
-  return result.data.data;
-}
-
-export async function fetchCategoryPageDetails(categoryId) {
-  const result = await apiConnector("POST", GET_CATEGORY_DETAILS_API, {
-    categoryId,
-  });
-  if (!result.data.success) {
-    throw new Error(result.data.message);
-  }
   return result.data.data;
 }
 

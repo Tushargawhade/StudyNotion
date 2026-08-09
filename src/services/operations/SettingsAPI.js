@@ -2,7 +2,7 @@ import { toast } from "react-hot-toast";
 import { apiConnector } from "../apiconnector";
 import { endpoints } from "../apis";
 
-const { UPDATE_PROFILE_API, UPDATE_DISPLAY_PICTURE_API, CHANGE_PASSWORD_API, DELETE_ACCOUNT_API } =
+const { UPDATE_PROFILE_API, CHANGE_PASSWORD_API, DELETE_ACCOUNT_API } =
   endpoints;
 
 export async function deleteAccount(token) {
@@ -28,20 +28,6 @@ export async function updateProfile(token, formData) {
   }
   toast.success("Profile updated successfully");
   return result.data.updatedDetails;
-}
-
-export async function updateDisplayPicture(token, formData) {
-  const result = await apiConnector(
-    "PUT",
-    UPDATE_DISPLAY_PICTURE_API,
-    formData,
-    { Authorization: `Bearer ${token}` }
-  );
-  if (!result.data.success) {
-    throw new Error(result.data.message);
-  }
-  toast.success("Display picture updated successfully");
-  return result.data.data;
 }
 
 export async function changePassword(token, formData) {

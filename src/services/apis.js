@@ -39,26 +39,18 @@ export const endpoints = {
     SUBSECTION_DELETE_API: BASE_URL + "/course/deleteSubSection",
     VIDEO_UPLOAD_SIGNATURE_API: BASE_URL + "/course/videoUploadSignature",
 
-    // category
-    CREATE_CATEGORY_API: BASE_URL + "/course/createCategory",
-    GET_CATEGORY_DETAILS_API: BASE_URL + "/course/getCategoryPageDetails",
-
     // rating
     RATING_API: BASE_URL + "/course/createRating",
     UPDATE_REVIEW_API: BASE_URL + "/course/updateReview",
     DELETE_REVIEW_API: BASE_URL + "/course/deleteReview",
     REVIEWS_API: BASE_URL + "/course/getReviews",
-    AVERAGE_RATING_API: BASE_URL + "/course/getAverageRating",
 
     // profile
     GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
     UPDATE_PROFILE_API: BASE_URL + "/profile/updateProfile",
-    UPDATE_DISPLAY_PICTURE_API: BASE_URL + "/profile/updateDisplayPicture",
     DELETE_ACCOUNT_API: BASE_URL + "/profile/deleteProfile",
     GET_ENROLLED_COURSES_API: BASE_URL + "/profile/getEnrolledCourses",
     GET_PURCHASE_HISTORY_API: BASE_URL + "/profile/getPurchaseHistory",
-    INSTRUCTOR_DASHBOARD_API: BASE_URL + "/profile/instructorDashboard",
-    DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
 
     // wishlist
     WISHLIST_ADD_API: BASE_URL + "/wishlist/add",

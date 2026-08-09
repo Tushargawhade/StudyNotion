@@ -89,8 +89,7 @@ function Settings() {
   const handleDeleteAccount = async () => {
     try {
       await deleteAccount(token);
-      dispatch(setUser(null));
-      logout(navigate);
+      dispatch(logout(navigate));
     } catch (error) {
       toast.error(error.message || "Could not delete account");
     }
