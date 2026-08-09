@@ -84,7 +84,6 @@ app.get("/", (req,res)=>{
 })
   
 
-// server activate 
 app.listen(PORT, ()=>{
     console.log("Server is running on port " + PORT);
 })
