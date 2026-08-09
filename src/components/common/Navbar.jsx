@@ -168,7 +168,7 @@ const Navbar = () => {
           {token === null && (
             <div className="hidden items-center gap-x-4 md:flex">
               <Link to="/login">
-                <button className="rounded-lg border border-richblack-500 px-[18px] py-[8px] text-sm font-medium text-richblack-25 transition-all duration-200 hover:border-yellow-50 hover:text-yellow-50">
+                <button className="rounded-lg bg-yellow-50 px-[18px] py-[8px] text-sm font-medium text-richblack-900 transition-all duration-200 hover:bg-yellow-25">
                   Log in
                 </button>
               </Link>
