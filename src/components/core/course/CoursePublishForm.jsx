@@ -114,7 +114,6 @@ function CoursePublishForm() {
           onclick={() => handlePublish("Draft")}
           disabled={loading}
           outline
-          customClasses="border-richblack-400 text-richblack-100 hover:border-yellow-50 hover:text-yellow-50"
         />
         <IconBtn
           onclick={() => handlePublish("Published")}

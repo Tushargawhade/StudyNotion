@@ -33,7 +33,7 @@ function CourseBuilder() {
       <div className="flex items-center justify-between">
         <button
           onClick={handleBack}
-          className="flex items-center gap-2 text-sm font-semibold text-richblack-100 hover:text-richblack-5"
+          className="flex items-center gap-2 text-sm font-semibold text-richblack-25 hover:text-yellow-50"
         >
           <IoIosArrowBack className="text-lg" />
           Back
