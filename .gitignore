@@ -1,11 +1,10 @@
-#ignore files
 /node_modules
 /.pnp
 .pnp.js
 
-# environment variables (never commit secrets)
+# environment variables 
 .env
 server/.env
 
-# build output
+
 /build
